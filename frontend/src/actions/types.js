@@ -1,0 +1,8 @@
+/*CATEGORIES*/
+export const LIST_CATEGORIES = 'LIST_CATEGORIES';
+
+/*POSTS*/
+export const LIST_POSTS = 'LIST_POSTS';
+export const LIST_POSTS_BY_CATEGORY = 'LIST_POSTS_BY_CATEGORY';
+export const DELETE_POST = 'DELETE_POST';
+export const VOTE_POST = 'VOTE_POST';

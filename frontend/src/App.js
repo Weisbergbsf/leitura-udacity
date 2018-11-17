@@ -1,32 +1,28 @@
-import React, { Component } from 'react';
-
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
+import LoadingBar from 'react-redux-loading';
 import './App.css';
 
-import * as Api from './util/api';
+import Posts from './components/Posts'
 
 
 class App extends Component {
 
-  componentWillMount() {
-    console.log('CATEGORIES: ',Api.getCategories().then(categories => {
-      
-        console.log(categories);
-      
-    }));
-    console.log('posts: ',Api.getPosts().then(posts => {
-      console.log(posts);
-    }));
-    
-  }
-
-
   render() {
     
     return (
-      <div className="App">
-        <h1>Leitura</h1>
-        
-      </div>
+      <Router>
+        <Fragment>
+          <LoadingBar/>
+          <Container>
+
+            <Route path='/' component={Posts}/>
+
+          </Container>
+        </Fragment>
+      </Router>
+      
     );
   }
 }

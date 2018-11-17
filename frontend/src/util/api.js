@@ -5,14 +5,25 @@ const headers = {
     'Authorization': 'any-password'
 }
 //Categories
-export const getCategories = () => fetchGetData('categories');
+export const getCategories = () => fetchGetData('categories');//ok
 
 //Posts
-export const getPosts = () => fetchGetData('posts');
-export const getPostsByCategoria = (category) => fetchGetData(`${category}/posts`);
-export const getPost = (postId) => fetchGetData(`posts/${postId}`);
-export const createPost = (Post) => fetchData('posts','POST', Post);
+export const getPosts = () => fetchGetData('posts');//ok
+export const getPostsByCategoria = (category) => fetchGetData(`${category}/posts`);//ok
+export const deletePost = (post_id) => fetchData(`posts/${post_id}`, 'DELETE');
 
+export const getPost = (post) => fetchGetData(`posts/${post}`);
+export const createPost = (post) => fetchData('posts', 'POST', post);
+export const editPost = (post) => fetchData(`posts/${post}`, 'PUT', post);
+export const votePost = (post_id, option) => fetchData(`posts/${post_id}`, 'POST', option);
+
+//Comments
+export const getCommnetsByPost = (post) => fetchGetData(`posts/${post}/comments`);
+export const getComment = (comment) => fetchGetData(`comments/${comment}`);
+export const createComment = (comment) => fetchData('comments', 'POST', comment);
+export const editc = (comment) => fetchGetData(`comments/${comment}`, 'PUT', comment);
+export const deleteComcent = (comment) => fetchData(`comments/${comment}`, 'DELETE');
+export const voteComment = (comment, option) => fetchData(`comment/${comment}`, 'POST', option)
 
 
 const fetchGetData = (url) => {
@@ -30,8 +41,8 @@ const fetchData = (url, method, data) => {
             headers: headers,
             body: JSON.stringify(data)
         })
-        .then(res => res.json())
-        .then(data => data)
+            .then(res => res.json())
+            .then(data => data)
     );
 }
 
