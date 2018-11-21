@@ -1,8 +1,9 @@
-import { LIST_POSTS, LIST_POSTS_BY_CATEGORY, LIST_CATEGORIES, DELETE_POST, VOTE_POST } from '../actions/types';
+import { LIST_POSTS, LIST_POSTS_BY_CATEGORY, LIST_CATEGORIES, DELETE_POST, VOTE_POST, CREATE_POST } from '../actions/types';
 
 const INITIAL_STATE = {
 
-    posts: []
+    posts: [],
+    categories: []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -12,6 +13,8 @@ export default (state = INITIAL_STATE, action) => {
         case LIST_POSTS_BY_CATEGORY:
             return { ...state, category: action.category, posts: action.posts }
         case LIST_POSTS:
+            return { ...state, posts: action.posts }
+        case CREATE_POST:
             return { ...state, posts: action.posts }
         case DELETE_POST:
             return { ...state, posts: state.posts.filter(post => post.id !== action.post_id) }

@@ -5,7 +5,7 @@ import LoadingBar from 'react-redux-loading';
 import './App.css';
 
 import Posts from './components/Posts'
-
+import NewPost from './components/NewPost';
 
 class App extends Component {
 
@@ -17,7 +17,9 @@ class App extends Component {
           <LoadingBar/>
           <Container>
 
-            <Route path='/' component={Posts}/>
+            <Route  path='/' exact component={Posts}/>
+            <Route path='/new-post' component={NewPost}/>
+            
 
           </Container>
         </Fragment>

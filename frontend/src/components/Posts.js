@@ -22,10 +22,11 @@ class Posts extends Component {
     }
 
     componentWillMount() {
-        this.props.listCategoriesAction()
+        //this.props.listCategoriesAction()
         this.props.postsAction()
         //this.props.postsByCategoriaAction('react')
         //this.props.deletePostAction('6ni6ok3ym7mf1p33lnez')
+        
     }
 
     render() {
