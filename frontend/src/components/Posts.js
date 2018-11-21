@@ -16,22 +16,19 @@ import moment from 'moment';
 class Posts extends Component {
 
     handleClickVote = (post_id, option) => {
-        //e.preventDefault();
-        //console.log('handleClickVote: ', post_id , ' options: ', option);
         this.props.votePostAction(post_id, option);
     }
 
-    componentWillMount() {
-        //this.props.listCategoriesAction()
+    componentDidMount() {
         this.props.postsAction()
-        //this.props.postsByCategoriaAction('react')
-        //this.props.deletePostAction('6ni6ok3ym7mf1p33lnez')
-        
+        console.log('---componentDidMount-->>>> ', this.props.posts.posts)
     }
 
     render() {
-        
+
         const list = this.props.posts.posts || [];
+        //list.sort((a,b) => b.voteScore - a.voteScore)
+
         const ListPosts = list.map((post) =>
 
             <Comment key={post.id}>
@@ -70,11 +67,6 @@ class Posts extends Component {
                         <Comment.Action onClick={() => this.handleClickVote(post.id, 'downVote')}>
                             <Icon name="thumbs down outline" color='red' size='large' />
                         </Comment.Action>
-                        {/*
-                        <Comment.Action className="total-comment">
-                            <Icon name="comment alternate outline" size='large' /> <span>Comment</span>
-                        </Comment.Action>
-                        */}
                     </Comment.Actions>
 
                 </Comment.Content>

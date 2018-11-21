@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Form, Select, Input } from 'semantic-ui-react'
 
+import { withRouter } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { listCategoriesAction, createPostAction } from '../actions/postActions';
+import { listCategoriesAction, createPostAction, postsAction, } from '../actions/postActions';
 
 import uuid from 'uuid';
 
@@ -22,22 +24,16 @@ class NewPost extends Component {
     }
 
     handleChangeInput = (e) => {
-        console.log('XXXXXXX', e.target.name)
         this.setState({ [e.target.name]: e.target.value })
-
     }
 
     handleChangeSelect(e, data) {
-        console.log(data)
         this.setState({ category: data.value })
     }
 
     handleSubmit = (e) => {
         e.preventDefault()
-
-        // TODO: Add Post to store
         const { author, title, body, category } = this.state
-        console.log('Post: ',author, ' - ', title, ' - ', body, ' - ', category);
 
         let post = {
             id: uuid.v1(),
@@ -47,7 +43,7 @@ class NewPost extends Component {
             author: author,
             category: category
         }
-        this.props.createPostAction(post);
+        this.props.createPostAction(post)
 
         this.setState(() => ({
             author: '',
@@ -55,9 +51,9 @@ class NewPost extends Component {
             body: '',
             category: ''
         }))
+       
+        this.props.history.push('/')
     }
-
-
 
     componentWillMount() {
         this.props.listCategoriesAction()
@@ -74,6 +70,7 @@ class NewPost extends Component {
         })
         return (
             <div>
+                <br/>
                 <h3>New Post</h3>
 
                 <Form onSubmit={this.handleSubmit}>
@@ -104,11 +101,12 @@ class NewPost extends Component {
     }
 }
 
-const mapStateToProps = state => ({ categories: state.posts.categories })
+const mapStateToProps = state => ({ categories: state.posts.categories, posts: state.posts  })
 //const mapStateToProps = ({ posts }) => ({ posts })
 const mapDispatchToProps = dispatch => bindActionCreators({
     listCategoriesAction,
-    createPostAction
+    createPostAction,
+    postsAction,
 },dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPost);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewPost));
