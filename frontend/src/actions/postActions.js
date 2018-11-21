@@ -1,12 +1,13 @@
 
 import * as Api from '../util/api'
-import { 
-    LIST_POSTS, 
-    LIST_POSTS_BY_CATEGORY, 
-    LIST_CATEGORIES, 
-    DELETE_POST, 
-    VOTE_POST, 
-    CREATE_POST 
+import {
+    LIST_POSTS,
+    LIST_POSTS_BY_CATEGORY,
+    LIST_CATEGORIES,
+    DELETE_POST,
+    VOTE_POST,
+    CREATE_POST,
+    SORT_POST
 } from './types';
 import { showLoading, hideLoading } from 'react-redux-loading';
 
@@ -23,13 +24,9 @@ export const postsAction = () => {
 }
 
 export const createPostAction = (post) => {
-    console.log('createPostAction.........................')
-    console.log('createPostAction: ', post)
     return (dispatch) => {
-        dispatch(listCategoriesAction())
-        Api.createPost(post).then(response => {
-            dispatch({ type: CREATE_POST, posts: response })
-            dispatch(postsAction())
+        Api.createPost(post).then(() => {
+            dispatch({ type: CREATE_POST, post })
         })
     }
 }
@@ -54,15 +51,21 @@ export const votePostAction = (post_id, option) => {
     return (dispatch) => {
         Api.votePost(post_id, { option }).then(() => {
             dispatch({ type: VOTE_POST, vote, post_id })
-        }
-        )
+        })
+    }
+}
+
+export const sortPostAction = (sortBy) => {
+    console.log('sortPostAction ', sortBy)
+    return (dispatch) => {
+        dispatch({ type: SORT_POST, sortBy })
     }
 }
 
 export const listCategoriesAction = () => {
     return (dispatch) => {
         Api.getCategories().then(categories => {
-            dispatch({ type: LIST_CATEGORIES, categories})
+            dispatch({ type: LIST_CATEGORIES, categories })
         })
     }
 }
