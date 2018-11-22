@@ -36,8 +36,8 @@ class NewPost extends Component {
         const { author, title, body, category } = this.state
 
         let post = {
-            id: uuid.v1(),
-            timestamp: Date.now(),
+            //id: uuid.v1(),
+            //timestamp: Date.now(),
             title: title,
             body: body,
             author: author,

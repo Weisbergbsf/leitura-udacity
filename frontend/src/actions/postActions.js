@@ -7,9 +7,11 @@ import {
     DELETE_POST,
     VOTE_POST,
     CREATE_POST,
-    SORT_POST
+    SORT_POST,
+    EDIT_POST
 } from './types';
 import { showLoading, hideLoading } from 'react-redux-loading';
+import uuid from 'uuid';
 
 
 export const postsAction = () => {
@@ -24,12 +26,33 @@ export const postsAction = () => {
     }
 }
 
-export const createPostAction = (post) => {
-    return (dispatch) => {
-        Api.createPost(post).then(() => {
-            dispatch({ type: CREATE_POST, post })
-        })
+export const createPostAction = (postReq) => {
+    console.log('createPostAction ', postReq)
+    let post = {
+        id: postReq.id ? postReq.id : uuid.v1(),
+        timestamp: Date.now(), 
+        title: postReq.title, 
+        body: postReq.body, 
+        author: postReq.body
     }
+    console.log('createPostAction ', post)
+    if(post.id) {
+        console.log('no if')
+        return (dispatch) => {
+            Api.editPost(post.id).then(() => {
+                dispatch({ type: EDIT_POST, post })
+            })
+        }
+    } 
+    else {
+        console.log('no else ', post)
+        return (dispatch) => {
+            Api.createPost(post).then(() => {
+                dispatch({ type: CREATE_POST, post })
+            })
+        }
+    }
+    
 }
 
 export const postsByCategoriaAction = (category) => {
@@ -42,9 +65,7 @@ export const postsByCategoriaAction = (category) => {
 
 export const deletePostAction = (post_id) => {
     return (dispatch) => {
-        Api.deletePost(post_id).then(
-            dispatch({ type: DELETE_POST, post_id })
-        )
+        Api.deletePost(post_id).then(dispatch({ type: DELETE_POST, post_id }))
     }
 }
 

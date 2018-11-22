@@ -11,12 +11,12 @@ export const getCategories = () => fetchGetData('categories');//ok
 export const getPosts = () => fetchGetData('posts');//ok
 export const getPostsByCategoria = (category) => fetchGetData(`${category}/posts`);//ok
 export const createPost = (post) => fetchData('posts', 'POST', post);//ok
+export const deletePost = (post_id) => fetchData(`posts/${post_id}`, 'DELETE');//ok
+export const votePost = (post_id, option) => fetchData(`posts/${post_id}`, 'POST', option);//ok
+export const getPost = (post_id) => fetchGetData(`posts/${post_id}`);
+
 export const editPost = (post) => fetchData(`posts/${post}`, 'PUT', post);
 
-export const deletePost = (post_id) => fetchData(`posts/${post_id}`, 'DELETE');
-
-export const getPost = (post) => fetchGetData(`posts/${post}`);
-export const votePost = (post_id, option) => fetchData(`posts/${post_id}`, 'POST', option);
 
 //Comments
 export const getCommnetsByPost = (post) => fetchGetData(`posts/${post}/comments`);

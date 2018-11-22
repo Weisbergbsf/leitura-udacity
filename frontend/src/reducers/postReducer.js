@@ -16,9 +16,7 @@ export default (state = INITIAL_STATE, action) => {
         case LIST_POSTS:
             return { ...state, posts: action.posts }
         case CREATE_POST:
-            return {
-                ...state,
-                posts: [...state.posts, action.post]
+            return { ...state, posts: [...state.posts, action.post]
             }
         case DELETE_POST:
             return { ...state, posts: state.posts.filter(post => post.id !== action.post_id) }
@@ -35,8 +33,6 @@ export default (state = INITIAL_STATE, action) => {
         case SORT_POST:
             return {
                 ...state,
-               // sortBy: action.sortBy
-                
                 posts: state.posts.sort((a, b) => {
                     if (action.sortBy === 'voteScore') {
                         return b.voteScore < a.voteScore ? -1 : 1
