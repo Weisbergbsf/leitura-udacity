@@ -7,7 +7,8 @@ import {
     postsAction,
     postsByCategoriaAction,
     deletePostAction,
-    votePostAction
+    votePostAction,
+    sortPostAction
 } from '../actions/postActions';
 
 import { Comment, Icon, Divider, Label } from 'semantic-ui-react';
@@ -19,17 +20,14 @@ class Posts extends Component {
         this.props.votePostAction(post_id, option);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.postsAction()
-        console.log('---componentDidMount-->>>> ', this.props.posts.posts)
     }
 
     render() {
+        const posts = this.props.posts.posts || [];
 
-        const list = this.props.posts.posts || [];
-        //list.sort((a,b) => b.voteScore - a.voteScore)
-
-        const ListPosts = list.map((post) =>
+        const ListPosts = posts.map((post) =>
 
             <Comment key={post.id}>
 
@@ -90,7 +88,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     postsAction,
     postsByCategoriaAction,
     deletePostAction,
-    votePostAction
+    votePostAction,
+    sortPostAction
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);

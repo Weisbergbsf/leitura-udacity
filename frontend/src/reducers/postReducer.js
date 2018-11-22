@@ -3,6 +3,7 @@ import { LIST_POSTS, LIST_POSTS_BY_CATEGORY, LIST_CATEGORIES, DELETE_POST, VOTE_
 const INITIAL_STATE = {
 
     posts: [],
+    sortBy: 'voteScore',
     categories: []
 }
 
@@ -15,15 +16,15 @@ export default (state = INITIAL_STATE, action) => {
         case LIST_POSTS:
             return { ...state, posts: action.posts }
         case CREATE_POST:
-            return { 
-                ...state, 
+            return {
+                ...state,
                 posts: [...state.posts, action.post]
             }
         case DELETE_POST:
             return { ...state, posts: state.posts.filter(post => post.id !== action.post_id) }
         case VOTE_POST:
             return {
-                ...state, 
+                ...state,
                 posts: state.posts.map(post => {
                     if (post.id === action.post_id) {
                         post.voteScore = post.voteScore + action.vote
@@ -32,18 +33,20 @@ export default (state = INITIAL_STATE, action) => {
                 })
             }
         case SORT_POST:
-            return { 
+            return {
                 ...state,
-                posts: state.posts.sort((a,b) => {
-                    if(action.sortBy === 'vote') {
-                        return b.voteScore - a.voteScore
-                    } else{
-                        return b.timestamp - a.timestamp
+               // sortBy: action.sortBy
+                
+                posts: state.posts.sort((a, b) => {
+                    if (action.sortBy === 'voteScore') {
+                        return b.voteScore < a.voteScore ? -1 : 1
+                    } else if (action.sortBy === 'timestamp') {
+                        let dateA = new Date(a.timestamp)
+                        let dateB = new Date(b.timestamp)
+                        return dateA > dateB ? -1 : 1;
                     }
+                    return 0;
                 })
-                
-                
-                //list.sort((a,b) => b.voteScore - a.voteScore)
             }
         default:
             return state;

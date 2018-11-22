@@ -18,6 +18,7 @@ export const postsAction = () => {
         Api.getPosts().then(response => {
             dispatch({ type: LIST_POSTS, posts: response })
             dispatch(listCategoriesAction())
+            dispatch(sortPostAction('voteScore'))
             dispatch(hideLoading())
         })
     }
@@ -46,6 +47,7 @@ export const deletePostAction = (post_id) => {
         )
     }
 }
+
 export const votePostAction = (post_id, option) => {
     let vote = (option === 'upVote') ? 1 : -1
     return (dispatch) => {
@@ -56,10 +58,7 @@ export const votePostAction = (post_id, option) => {
 }
 
 export const sortPostAction = (sortBy) => {
-    console.log('sortPostAction ', sortBy)
-    return (dispatch) => {
-        dispatch({ type: SORT_POST, sortBy })
-    }
+    return { type: SORT_POST, sortBy }
 }
 
 export const listCategoriesAction = () => {
