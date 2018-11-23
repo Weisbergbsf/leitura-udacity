@@ -8,7 +8,8 @@ import {
     VOTE_POST,
     CREATE_POST,
     SORT_POST,
-    EDIT_POST
+    EDIT_POST,
+    GET_POST_BY_ID
 } from './types';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import uuid from 'uuid';
@@ -26,40 +27,53 @@ export const postsAction = () => {
     }
 }
 
+export const postById = (post_id) => {
+    return (dispatch) => {
+        Api.getPostById(post_id).then(response => {
+            console.log('response   ',response)
+            dispatch({ type: GET_POST_BY_ID, post: response })
+        })
+    }
+}
+
 export const createPostAction = (postReq) => {
     console.log('createPostAction ', postReq)
     let post = {
-        id: postReq.id ? postReq.id : uuid.v1(),
-        timestamp: Date.now(), 
-        title: postReq.title, 
-        body: postReq.body, 
-        author: postReq.body
+        id: uuid(),
+        timestamp: Date.now(),
+        title: postReq.title,
+        body: postReq.body,
+        author: postReq.author
     }
-    console.log('createPostAction ', post)
-    if(post.id) {
-        console.log('no if')
-        return (dispatch) => {
-            Api.editPost(post.id).then(() => {
-                dispatch({ type: EDIT_POST, post })
-            })
-        }
-    } 
-    else {
-        console.log('no else ', post)
-        return (dispatch) => {
-            Api.createPost(post).then(() => {
-                dispatch({ type: CREATE_POST, post })
-            })
-        }
+
+    return (dispatch) => {
+        Api.createPost(post).then(() => {
+            dispatch({ type: CREATE_POST, post })
+        })
     }
-    
+
 }
+
+
 
 export const postsByCategoriaAction = (category) => {
     return (dispatch) => {
         Api.getPostsByCategoria(category).then(response => {
             dispatch({ type: LIST_POSTS_BY_CATEGORY, category: category, posts: response })
         })
+    }
+}
+
+export const editPostAction = (id, post) => {
+    let postUp = {
+        id: id,
+        author: post.author,
+        title: post.title,
+        category: post.category,
+        body: post.body
+    }
+    return (dispatch) => {
+        Api.editPost(postUp).then(dispatch({ type: EDIT_POST, id, post }))
     }
 }
 

@@ -5,9 +5,10 @@ import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { listCategoriesAction, createPostAction, postsAction, } from '../actions/postActions';
+import { listCategoriesAction, createPostAction } from '../actions/postActions';
 
-import uuid from 'uuid';
+import PostForm from './PostForm';
+
 
 class NewPost extends Component {
     constructor(props) {
@@ -36,8 +37,6 @@ class NewPost extends Component {
         const { author, title, body, category } = this.state
 
         let post = {
-            //id: uuid.v1(),
-            //timestamp: Date.now(),
             title: title,
             body: body,
             author: author,
@@ -60,53 +59,29 @@ class NewPost extends Component {
     }
 
     render() {
-        const { title, body, author } = this.state
-        const postLeft = 280 - body.length
-
-        const list = this.props.categories.categories || [];
-        const optionCategories = [];
-        list.map(category => {
-            return optionCategories.push({ key: category.name, text: category.name, value: category.name })
-        })
+        //const { title, body, author } = this.state
+        
         return (
             <div>
                 <br/>
                 <h3>New Post</h3>
-
-                <Form onSubmit={this.handleSubmit}>
                 
-                    <Form.Field control={Input} label='Author' placeholder='Author'
-                        name='author' value={author} onChange={this.handleChangeInput}
-                    />
-                    <Form.Field control={Input} label='Title' placeholder='Title'
-                        name='title' value={title} onChange={this.handleChangeInput}
-                    />
-                    <Form.Field control={Select} label='Caterory' 
-                        name='category' onChange={this.handleChangeSelect}
-                        options={optionCategories} placeholder='Category'
-                    />
-                    <Form.TextArea label='Body' placeholder="What's happening?"
-                        name='body' value={body} onChange={this.handleChangeInput}
-                        maxLength={280}
-                    />
-                    {postLeft <= 100 && (
-                        <div>
-                            {postLeft}
-                        </div>
-                    )}
-                    <Form.Button disabled={body === ''}>Submit</Form.Button>
-                </Form>
+                <PostForm 
+                    onSubmitPost={(post) => {
+                        this.props.createPostAction(post);
+                        this.props.history.push('/')
+                    }}
+                />
+                
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({ categories: state.posts.categories, posts: state.posts  })
-//const mapStateToProps = ({ posts }) => ({ posts })
 const mapDispatchToProps = dispatch => bindActionCreators({
     listCategoriesAction,
     createPostAction,
-    postsAction,
 },dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewPost));

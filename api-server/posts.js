@@ -111,6 +111,7 @@ function disable (token, id) {
 }
 
 function edit (token, id, post) {
+  console.log('----->>>>> ', token, id, post)
     return new Promise((res) => {
         let posts = getData(token)
         for (prop in post) {
