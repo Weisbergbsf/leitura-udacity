@@ -7,8 +7,32 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { listCategoriesAction, createPostAction } from '../actions/postActions';
 
+const styleErro = {
+    color: 'red',
+    fontWeight: 'bold'
+}
+
 class PostForm extends Component {
 
+    state = {
+        title: '',
+        author: '',
+        category: '',
+        body: '',
+
+        error: ''
+      }
+
+      componentWillReceiveProps(nexProps) {
+        let post = nexProps.post
+        this.setState({
+            title: post ? post.title : '',
+            author: post ? post.author : '',
+            category: post ? post.category : '',
+            body: post ? post.body : ''
+        })
+    }
+   
     constructor(props) {
         super(props);
         this.onAuthorChange = this.onAuthorChange.bind(this);
@@ -17,15 +41,6 @@ class PostForm extends Component {
         this.onBodyChange = this.onBodyChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-        state = {
-            author: this.props.post ? this.props.post.author : '',
-            title: this.props.post ? this.props.post.title : '',
-            category: this.props.post ? this.props.post.category : '',
-            body: this.props.post ? this.props.post.body : '',
-
-            error: ''
-        }
-   
 
     onAuthorChange(e) {
         const author = e.target.value;
@@ -48,17 +63,7 @@ class PostForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
-        this.props.onSubmitPost(
-            {
-                author: this.state.author,
-                title: this.state.title,
-                category: this.state.category,
-                body: this.state.body
-            }
-        );
-
-        /*
+        
 
         if (!this.state.title || !this.state.author || !this.state.body ) {
             this.setState(() => ({ error: 'Please, set author & title & category & description!' }));
@@ -73,14 +78,11 @@ class PostForm extends Component {
                     body: this.state.body
                 }
             );
-        }*/
+        }
     }
 
 
     render() {
-
-        console.log('this.state ', this.state)
-        console.log('this.props ', this.props)
 
         const list = this.props.categories.categories || [];
         const optionCategories = [];
@@ -90,7 +92,9 @@ class PostForm extends Component {
         return (
             <div>
                 <br/>
-                
+                {this.state.error !== '' && (
+                    <p style={styleErro}>{this.state.error}</p>
+                )}
 
                 <Form onSubmit={this.handleSubmit}>
                 
@@ -101,14 +105,20 @@ class PostForm extends Component {
                         name='title' value={this.state.title} onChange={this.onTitleChange}
                     />
                     <Form.Field control={Select} label='Caterory' 
-                        name='category' onChange={this.onCategoryChange}
+                        name='category' onChange={this.onCategoryChange} value={this.state.category}
                         options={optionCategories} placeholder='Category'
                     />
                     <Form.TextArea label='Body' placeholder="What's happening?"
                         name='body' value={this.state.body} onChange={this.onBodyChange}
                     />
                     
-                    <Form.Button>Submit</Form.Button>
+                    <Form.Button
+                        disabled={
+                            !this.state.author || 
+                            !this.state.title || 
+                            !this.state.category ||
+                            !this.state.body}
+                    >Submit</Form.Button>
                 </Form>
             </div>
         )
