@@ -5,9 +5,10 @@ import LoadingBar from 'react-redux-loading';
 import './App.css';
 
 import Navbar from './components/Navbar'
-import Posts from './components/Posts'
+import ListPosts from './components/ListPosts'
 import NewPost from './components/NewPost';
 import EditPost from './components/EditPost';
+import DetailPost from './components/DetailPost';
 
 class App extends Component {
 
@@ -19,9 +20,10 @@ class App extends Component {
           <LoadingBar />
           <Container>
             <Navbar />
-            <Route path='/' exact component={Posts} />
-            <Route path='/new-post' component={NewPost} />
-            <Route path='/post/:id' component={EditPost} />
+            <Route exact path='/'  component={ListPosts} />
+            <Route exact path='/new-post' component={NewPost} />
+            <Route exact path='/post/:id/edit' component={EditPost} />
+            <Route exact path='/:category/:postId' component={DetailPost} />
           </Container>
         </Fragment>
       </Router>

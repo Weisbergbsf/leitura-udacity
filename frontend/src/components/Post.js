@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { postsAction, postsByCategoriaAction, deletePostAction, votePostAction, postById } from '../actions/postActions';
+import {
+    postsAction,
+    postsByCategoriaAction,
+    deletePostAction,
+    votePostAction,
+    postById,
+
+} from '../actions/postActions';
 
 import { Comment, Icon, Divider, Label } from 'semantic-ui-react';
 import moment from 'moment';
@@ -10,6 +17,7 @@ import moment from 'moment';
 import swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/dist/sweetalert2.css'
 
+import Button from '../components/template/Button'
 
 class Post extends Component {
 
@@ -34,23 +42,23 @@ class Post extends Component {
     }
 
     handlePost = (post_id) => {
-        //as={Link} to={`/post/${id}`}
-        //console.log('chamou...', this.props)
         this.props.postById(post_id)
-        this.props.history.push(`/post/${post_id}`)
+        this.props.history.push(`/post/${post_id}/edit`)
+    }
+
+    handleDetailPost = (category, post_id) => {
+        this.props.postById(post_id)
+        this.props.history.push(`/${category}/${post_id}`)
     }
 
     render() {
-        //console.log(this.props)
-        
-        const { id, timestamp, title, body, author, voteScore, commentCount } = this.props
-        
-        
+        const { id, timestamp, title, body, author, voteScore, commentCount, category } = this.props
+
         return (
             <Comment>
                 <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
                 <Comment.Content>
-                    <Link to={`/`}>
+                    <div onClick={() => this.handleDetailPost(category, id)}>
                         <Comment.Text>{title}</Comment.Text>
                         <Comment.Author ><span> {author} </span>  </Comment.Author>
                         <Comment.Metadata>
@@ -72,25 +80,25 @@ class Post extends Component {
                             </div>
 
                         </Comment.Metadata>
-                    </Link>
+                    </div>
+                    <div>
+                        <Comment.Actions>
+                            <Comment.Action onClick={() => this.props.votePostAction(id, 'upVote')}>
+                                <Icon name="thumbs up outline" color='green' size='large' />
+                            </Comment.Action>
+                            <Comment.Action onClick={() => this.props.votePostAction(id, 'downVote')}>
+                                <Icon name="thumbs down outline" color='red' size='large' />
+                            </Comment.Action>
 
-                    <Comment.Actions>
-                        <Comment.Action onClick={() => this.props.votePostAction(id, 'upVote')}>
-                            <Icon name="thumbs up outline" color='green' size='large' />
-                        </Comment.Action>
-                        <Comment.Action onClick={() => this.props.votePostAction(id, 'downVote')}>
-                            <Icon name="thumbs down outline" color='red' size='large' />
-                        </Comment.Action>
+                            <Comment.Action onClick={() => this.handleDeletePost(id, title)}>
+                                <Icon name="trash alternate outline" color='red' size='large' />
+                            </Comment.Action>
+                            <Comment.Action onClick={() => this.handlePost(id)}>
+                                <Icon name="edit outline" color='blue' size='large' />
+                            </Comment.Action>
 
-                        <Comment.Action onClick={() => this.handleDeletePost(id, title)}>
-                            <Icon name="trash alternate outline" color='red' size='large' />
-                        </Comment.Action>
-                        <Comment.Action  onClick={() => this.handlePost(id)}>
-                            <Icon name="edit outline" color='blue' size='large' />
-                        </Comment.Action>
-
-                    </Comment.Actions>
-
+                        </Comment.Actions>
+                    </div>
                 </Comment.Content>
                 <Divider />
 
@@ -104,7 +112,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     postsByCategoriaAction,
     deletePostAction,
     votePostAction,
-    postById
+    postById,
+
 }, dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post));

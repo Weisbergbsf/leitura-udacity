@@ -11,9 +11,9 @@ class EditPost extends Component {
 
         return (
             <div>
-                <PostForm 
+                <PostForm
                     post={this.props.post}
-                    onSubmitPost={ post => {
+                    onSubmitPost={post => {
                         this.props.editPostAction(post_id, post);
                         this.props.history.push('/')
                     }}
@@ -23,11 +23,11 @@ class EditPost extends Component {
     }
 }
 
-const mapStateToProps = state => ({ post: state.posts.post  })
+const mapStateToProps = state => ({ post: state.posts.post })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     editPostAction
-},dispatch)
+}, dispatch)
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditPost);

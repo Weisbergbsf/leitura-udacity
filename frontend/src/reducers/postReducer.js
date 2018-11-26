@@ -1,11 +1,12 @@
-import { LIST_POSTS, LIST_POSTS_BY_CATEGORY, LIST_CATEGORIES, DELETE_POST, VOTE_POST, CREATE_POST, SORT_POST, GET_POST_BY_ID, EDIT_POST } from '../actions/types';
+import { LIST_POSTS, LIST_POSTS_BY_CATEGORY, LIST_CATEGORIES, DELETE_POST, VOTE_POST, CREATE_POST, SORT_POST, GET_POST_BY_ID, EDIT_POST, LIST_COMMENTS_BY_POST } from '../actions/types';
 
 const INITIAL_STATE = {
 
     posts: [],
     post: {},
     sortBy: 'voteScore',
-    categories: []
+    categories: [],
+    comments: []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -17,13 +18,12 @@ export default (state = INITIAL_STATE, action) => {
         case LIST_POSTS:
             return { ...state, posts: action.posts }
         case CREATE_POST:
-            return { ...state, posts: [...state.posts, action.post]
-            }
+            return { ...state, posts: [...state.posts, action.post] }
         case GET_POST_BY_ID:
             return { ...state, post: action.post }
         case EDIT_POST:
             return state.posts.map((post) => {
-                if(post.id === action.id) {
+                if (post.id === action.id) {
                     return { ...state, posts: [...state.posts, action.post] }
                 }
             })
@@ -35,9 +35,10 @@ export default (state = INITIAL_STATE, action) => {
                 posts: state.posts.map(post => {
                     if (post.id === action.post_id) {
                         post.voteScore = post.voteScore + action.vote
+                        state.post = post
                     }
                     return post;
-                })
+                }),
             }
         case SORT_POST:
             return {
@@ -53,6 +54,8 @@ export default (state = INITIAL_STATE, action) => {
                     return 0;
                 })
             }
+        case LIST_COMMENTS_BY_POST:
+            return { ...state, comments: action.comments }
         default:
             return state;
     }

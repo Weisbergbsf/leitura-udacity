@@ -9,11 +9,11 @@ import {
     CREATE_POST,
     SORT_POST,
     EDIT_POST,
-    GET_POST_BY_ID
+    GET_POST_BY_ID,
+    LIST_COMMENTS_BY_POST
 } from './types';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import uuid from 'uuid';
-
 
 export const postsAction = () => {
     return (dispatch) => {
@@ -30,20 +30,19 @@ export const postsAction = () => {
 export const postById = (post_id) => {
     return (dispatch) => {
         Api.getPostById(post_id).then(response => {
-            console.log('response   ',response)
             dispatch({ type: GET_POST_BY_ID, post: response })
         })
     }
 }
 
 export const createPostAction = (postReq) => {
-    console.log('createPostAction ', postReq)
     let post = {
         id: uuid(),
         timestamp: Date.now(),
         title: postReq.title,
         body: postReq.body,
-        author: postReq.author
+        author: postReq.author,
+        category: postReq.category
     }
 
     return (dispatch) => {
@@ -51,10 +50,7 @@ export const createPostAction = (postReq) => {
             dispatch({ type: CREATE_POST, post })
         })
     }
-
 }
-
-
 
 export const postsByCategoriaAction = (category) => {
     return (dispatch) => {
@@ -100,6 +96,20 @@ export const listCategoriesAction = () => {
     return (dispatch) => {
         Api.getCategories().then(categories => {
             dispatch({ type: LIST_CATEGORIES, categories })
+        })
+    }
+}
+
+/*
+GET /posts/:id/comments
+      USAGE:
+        Get all the comments for a single post
+*/
+// Comments
+export const listCommentsByPostAction = (post_id) => {
+    return (dispatch) => {
+        Api.getCommnetsByPost(post_id).then(comments => {
+            dispatch({ type: LIST_COMMENTS_BY_POST, comments })
         })
     }
 }
