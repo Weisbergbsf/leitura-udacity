@@ -1,4 +1,4 @@
-import { CREATE_COMMENT, GET_COMMENT_BY_ID, LIST_COMMENTS_BY_POST, EDIT_COMMENT, SHOW_FORM_EDIT_COMMENT, SHOW_FORM_ADD_COMMENT } from '../actions/action-types';
+import { CREATE_COMMENT, GET_COMMENT_BY_ID, LIST_COMMENTS_BY_POST, EDIT_COMMENT, SHOW_FORM_EDIT_COMMENT, SHOW_FORM_ADD_COMMENT, DELETE_COMMENT } from '../actions/action-types';
 
 const INITIAL_STATE = {
 
@@ -24,6 +24,8 @@ export default (state = INITIAL_STATE, action) => {
                 }
                 return comment;
             })
+        case DELETE_COMMENT:
+            return { ...state, comments: state.comments.filter(comment => comment.id !== action.comment_id) }
         case SHOW_FORM_EDIT_COMMENT:
             return { ...state, formEdit: action.formEdit }
         case SHOW_FORM_ADD_COMMENT:

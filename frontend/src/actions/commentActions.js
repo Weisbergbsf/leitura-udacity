@@ -6,10 +6,11 @@ import {
     GET_COMMENT_BY_ID,
     EDIT_COMMENT,
     SHOW_FORM_EDIT_COMMENT,
-    SHOW_FORM_ADD_COMMENT
+    SHOW_FORM_ADD_COMMENT,
+    DELETE_COMMENT,
+    VOTE_COMMENT
 } from './action-types';
 import uuid from 'uuid';
-
 
 export const createCommentAction = (commentReq) => {
     
@@ -52,6 +53,14 @@ export const editCommentAction = (id, comment) => {
             dispatch(showFormEditComment(false))
             dispatch(showFormAddComment(false))
         })
+    }
+}
+
+
+
+export const deleteCommentAction = (comment_id) => {
+    return (dispatch) => {
+        Api.deleteComment(comment_id).then(dispatch({ type: DELETE_COMMENT, comment_id }))
     }
 }
 

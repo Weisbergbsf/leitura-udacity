@@ -7,7 +7,8 @@ import {
     commentById, 
     listCommentsByPostAction, 
     showFormAddComment,
-    showFormEditComment
+    showFormEditComment,
+    deleteCommentAction
 } from '../actions/commentActions';
 
 import { Comment, Icon, Label, Button, Form } from 'semantic-ui-react';
@@ -39,10 +40,11 @@ class Commentary extends Component {
         this.props.commentById(comment_id);
     }
 
-    handleDeletePost = (post_id, title) => {
+    handleDeleteComment = (comment_id) => {
+        console.log('ooooooooooooooo')
         swal({
             title: 'Are you sure?',
-            text: 'You will not be able to recover this post!',
+            text: 'You will not be able to recover this comment!',
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
@@ -51,10 +53,10 @@ class Commentary extends Component {
             if (result.value) {
                 swal(
                     'Deleted!',
-                    `Post "${title}" deleted`,
+                    `Comment deleted`,
                     'success'
                 )
-                this.props.deletePostAction(post_id)
+                this.props.deleteCommentAction(comment_id)
             }
         })
     }
@@ -114,7 +116,7 @@ class Commentary extends Component {
                                                 <Icon name="thumbs down outline" color='red' size='large' />
                                             </Comment.Action>
 
-                                            <Comment.Action >
+                                            <Comment.Action onClick={() => this.handleDeleteComment(comment.id)}>
                                                 <Icon name="trash alternate outline" color='red' size='large' />
                                             </Comment.Action>
                                             <Comment.Action >
@@ -147,7 +149,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     listCommentsByPostAction,
     commentById,
     showFormAddComment,
-    showFormEditComment
+    showFormEditComment,
+    deleteCommentAction
 }, dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Commentary));
