@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { postsAction, postsByCategoriaAction, listCommentsByPostAction } from '../actions/postActions';
-import { commentById } from '../actions/commentActions';
+import { postsAction, postsByCategoriaAction } from '../actions/postActions';
+import { 
+    commentById, 
+    listCommentsByPostAction, 
+    showFormAddComment,
+    showFormEditComment
+} from '../actions/commentActions';
 
 import { Comment, Icon, Label, Button, Form } from 'semantic-ui-react';
 import moment from 'moment';
@@ -11,30 +16,27 @@ import moment from 'moment';
 import swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/dist/sweetalert2.css'
 
-import CommentForm from './CommentForm'
 import NewComment from './NewComment'
 import EditComment from './EditComment'
 
-
 class Commentary extends Component {
-
-    state = { 
-        collapsedNewComment: true,
-        collapsedEditComment: false
-    }
-
-    handleAddComment = (e) => this.setState({ collapsedNewComment: !this.state.collapsedNewComment })
 
     componentWillMount() {
         this.props.listCommentsByPostAction(this.props.match.params.postId)
     }
 
+    handleAddComment = () => {
+        if(this.props.formAdd === false) {
+            this.props.showFormAddComment(true)
+        } else if(this.props.formAdd === true){
+            this.props.showFormAddComment(false)
+        }
+        this.props.showFormEditComment(false)
+    }
+
     handleComment = (comment_id) => {
-        console.log('handleComment: ', comment_id)
+        this.props.showFormAddComment(false)
         this.props.commentById(comment_id);
-        //this.props.postById(post_id)
-        //this.props.history.push(`/post/${post_id}/edit`)
-        
     }
 
     handleDeletePost = (post_id, title) => {
@@ -58,9 +60,9 @@ class Commentary extends Component {
     }
 
     render() {
+        console.log(this.props)
         let comments = this.props.comments || [];
-        const { collapsedNewComment } = this.state;
-        console.log(comments)
+        
         return (
             <div>
                 <Comment.Group size='large' >
@@ -74,12 +76,16 @@ class Commentary extends Component {
                             />
                         </Form>
 
-                        <Comment.Group collapsed={collapsedNewComment}>
-                            <NewComment />
+                        <Comment.Group>
+                            {this.props.formAdd && (
+                                <NewComment />
+                            )}
                         </Comment.Group>
 
-                        <Comment.Group collapsed={collapsedNewComment}>
-                            {/*TODO: EditComment*/}
+                        <Comment.Group >
+                            {this.props.formEdit && (
+                                <EditComment />
+                            )}
                         </Comment.Group>
                     </div>
 
@@ -113,7 +119,7 @@ class Commentary extends Component {
                                                 <Icon name="trash alternate outline" color='red' size='large' />
                                             </Comment.Action>
                                             <Comment.Action >
-                                                <Icon name="edit outline" color='blue' size='large' 
+                                                <Icon name="edit outline" color='blue' size='large'
                                                     onClick={() => this.handleComment(comment.id)}
                                                 />
                                             </Comment.Action>
@@ -129,17 +135,20 @@ class Commentary extends Component {
         )
     }
 }
-const mapStateToProps = state => ({ 
-    posts: state.posts, 
-    comments: state.posts.comments,
-    comment: state.comments.comment
+const mapStateToProps = state => ({
+    posts: state.posts,
+    comments: state.comments.comments,
+    formEdit: state.comments.formEdit,
+    formAdd: state.comments.formAdd
 
 })
 const mapDispatchToProps = dispatch => bindActionCreators({
     postsAction,
     postsByCategoriaAction,
     listCommentsByPostAction,
-    commentById
+    commentById,
+    showFormAddComment,
+    showFormEditComment
 }, dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Commentary));

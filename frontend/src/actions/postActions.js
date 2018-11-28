@@ -9,8 +9,7 @@ import {
     CREATE_POST,
     SORT_POST,
     EDIT_POST,
-    GET_POST_BY_ID,
-    LIST_COMMENTS_BY_POST
+    GET_POST_BY_ID
 } from './types';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import uuid from 'uuid';
@@ -99,18 +98,3 @@ export const listCategoriesAction = () => {
         })
     }
 }
-
-/*
-GET /posts/:id/comments
-      USAGE:
-        Get all the comments for a single post
-*/
-// Comments
-export const listCommentsByPostAction = (post_id) => {
-    return (dispatch) => {
-        Api.getCommnetsByPost(post_id).then(comments => {
-            dispatch({ type: LIST_COMMENTS_BY_POST, comments })
-        })
-    }
-}
-

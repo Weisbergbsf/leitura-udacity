@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { commentById } from '../actions/commentActions';
+import { withRouter } from 'react-router-dom';
+import { commentById, editCommentAction, listCommentsByPostAction } from '../actions/commentActions';
 import CommentForm from './CommentForm';
 
 class EditComment extends Component {
 
     render() {
-        //let post_id = this.props.match.params.id;
-        console.log(this.props)
+
+        let category = this.props.match.params.category
+        let postId = this.props.match.params.postId;
+
         return (
             <div>
+                <h3>Edit Comment</h3>
                 <CommentForm
                     comment={this.props.comment}
-                    onSubmitPost={post => {
-                        //this.props.editPostAction(post_id, post);
-                        //this.props.history.push('/')
+                    onSubmitComment={comment => {
+                        this.props.editCommentAction(comment.id, comment);
+                        this.props.history.push(`/${category}/${postId}`);
+                        this.props.listCommentsByPostAction(postId);
                     }}
                 />
             </div>
@@ -23,11 +28,16 @@ class EditComment extends Component {
     }
 }
 
-const mapStateToProps = state => ({ comment: state.comments.comment })
+const mapStateToProps = (state) => ({
+    comment: state.comments.comment,
+    comments: state.comments.comments,
+})
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    commentById
+    commentById,
+    editCommentAction,
+    listCommentsByPostAction
 }, dispatch)
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditComment);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditComment));

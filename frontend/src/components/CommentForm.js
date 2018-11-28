@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { listCategoriesAction, createPostAction } from '../actions/postActions';
+import { listCommentsByPostAction, commentById } from '../actions/commentActions';
 
 const styleErro = {
     color: 'red',
@@ -18,6 +19,8 @@ class CommentForm extends Component {
         author: '',
         body: '',
         parentId: '',
+        id: '',
+
         error: ''
     }
 
@@ -28,6 +31,7 @@ class CommentForm extends Component {
             author: comment ? comment.author : '',
             body: comment ? comment.body : '',
             parentId: nexProps.match.params.postId,
+            id: comment ? comment.id : '',
         })
     }
 
@@ -57,19 +61,17 @@ class CommentForm extends Component {
         } else {
             this.setState(() => ({ error: '' }));
 
-            this.props.onSubmitComment(
-                {
+            this.props.onSubmitComment({
                     author: this.state.author,
                     body: this.state.body,
-                    parentId: this.state.parentId
-                }
-            );
+                    parentId: this.state.parentId,
+                    id: this.state.id
+            });
         }
     }
 
 
     render() {
-        //console.log(this.props)
 
         return (
             <div>
@@ -80,12 +82,10 @@ class CommentForm extends Component {
 
                 <Form onSubmit={this.handleSubmit}>
                     
-                    <input  type='hidden' name='parentId' value={this.state.parentId} />
-
                     <Form.Field control={Input} label='Author' placeholder='Author'
                         name='author' value={this.state.author} onChange={this.onAuthorChange}
                     />
-
+                    
                     <Form.TextArea label='Body' placeholder="What's happening?"
                         name='body' value={this.state.body} onChange={this.onBodyChange}
                     />
@@ -99,10 +99,16 @@ class CommentForm extends Component {
     }
 }
 
-const mapStateToProps = state => ({ posts: state.posts })
+const mapStateToProps = state => ({ 
+    posts: state.posts,
+    comments: state.comments.comments,
+    //comment: state.comments.comment
+})
 const mapDispatchToProps = dispatch => bindActionCreators({
     listCategoriesAction,
     createPostAction,
+    listCommentsByPostAction,
+    commentById
 }, dispatch)
 
 

@@ -12,6 +12,8 @@ class NewComment extends Component {
 
     render() {
         console.log(this.props)
+        let category = this.props.match.params.category
+        let postId = this.props.match.params.postId
         return (
             <div>
                 
@@ -20,7 +22,7 @@ class NewComment extends Component {
                 <CommentForm 
                     onSubmitComment={(comment) => {
                         this.props.createCommentAction(comment);
-                        this.props.history.push('/')
+                        this.props.history.push(`/${category}/${postId}`)
                     }}
                 />
                 

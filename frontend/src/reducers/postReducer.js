@@ -1,4 +1,14 @@
-import { LIST_POSTS, LIST_POSTS_BY_CATEGORY, LIST_CATEGORIES, DELETE_POST, VOTE_POST, CREATE_POST, SORT_POST, GET_POST_BY_ID, EDIT_POST, LIST_COMMENTS_BY_POST } from '../actions/types';
+import { 
+    LIST_POSTS, 
+    LIST_POSTS_BY_CATEGORY, 
+    LIST_CATEGORIES, 
+    DELETE_POST, 
+    VOTE_POST, 
+    CREATE_POST, 
+    SORT_POST, 
+    GET_POST_BY_ID, 
+    EDIT_POST 
+} from '../actions/types';
 
 const INITIAL_STATE = {
 
@@ -6,7 +16,6 @@ const INITIAL_STATE = {
     post: {},
     sortBy: 'voteScore',
     categories: [],
-    comments: []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -54,8 +63,7 @@ export default (state = INITIAL_STATE, action) => {
                     return 0;
                 })
             }
-        case LIST_COMMENTS_BY_POST:
-            return { ...state, comments: action.comments }
+        
         default:
             return state;
     }

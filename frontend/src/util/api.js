@@ -24,8 +24,9 @@ export const createComment = (comment) => fetchData('comments', 'POST', comment)
 
 export const getCommentById = (comment_id) => fetchGetData(`comments/${comment_id}`);
 
-export const editc = (comment) => fetchGetData(`comments/${comment}`, 'PUT', comment);
-export const deleteComcent = (comment) => fetchData(`comments/${comment}`, 'DELETE');
+export const editComment = (comment) => fetchData(`comments/${comment.id}`, 'PUT', comment);
+
+export const deleteComment = (comment) => fetchData(`comments/${comment}`, 'DELETE');
 export const voteComment = (comment, option) => fetchData(`comment/${comment}`, 'POST', option)
 
 
