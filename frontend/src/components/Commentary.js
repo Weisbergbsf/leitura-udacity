@@ -60,7 +60,6 @@ class Commentary extends Component {
     }
 
     render() {
-        console.log(this.props)
         let comments = this.props.comments || [];
         
         return (

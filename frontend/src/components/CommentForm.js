@@ -14,7 +14,7 @@ const styleErro = {
 }
 
 class CommentForm extends Component {
-
+    
     state = {
         author: '',
         body: '',
@@ -23,9 +23,8 @@ class CommentForm extends Component {
 
         error: ''
     }
-
+    
     componentWillReceiveProps(nexProps) {
-        console.log('nexProps:  ',nexProps)
         let comment = nexProps.comment
         this.setState({
             author: comment ? comment.author : '',
@@ -33,6 +32,10 @@ class CommentForm extends Component {
             parentId: nexProps.match.params.postId,
             id: comment ? comment.id : '',
         })
+    }
+
+    componentWillMount() {
+        this.setState({parentId: this.props.match.params.postId})
     }
 
     constructor(props) {
@@ -55,12 +58,10 @@ class CommentForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-
         if (!this.state.author || !this.state.body) {
             this.setState(() => ({ error: 'Please, set author & description!' }));
         } else {
             this.setState(() => ({ error: '' }));
-
             this.props.onSubmitComment({
                     author: this.state.author,
                     body: this.state.body,
@@ -69,7 +70,6 @@ class CommentForm extends Component {
             });
         }
     }
-
 
     render() {
 
@@ -102,7 +102,6 @@ class CommentForm extends Component {
 const mapStateToProps = state => ({ 
     posts: state.posts,
     comments: state.comments.comments,
-    //comment: state.comments.comment
 })
 const mapDispatchToProps = dispatch => bindActionCreators({
     listCategoriesAction,
@@ -110,6 +109,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     listCommentsByPostAction,
     commentById
 }, dispatch)
-
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CommentForm));

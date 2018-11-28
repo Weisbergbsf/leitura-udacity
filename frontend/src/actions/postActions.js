@@ -10,7 +10,7 @@ import {
     SORT_POST,
     EDIT_POST,
     GET_POST_BY_ID
-} from './types';
+} from './action-types';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import uuid from 'uuid';
 

@@ -11,14 +11,11 @@ import CommentForm from './CommentForm';
 class NewComment extends Component {
 
     render() {
-        console.log(this.props)
         let category = this.props.match.params.category
         let postId = this.props.match.params.postId
         return (
             <div>
-                
                 <h3>New Comment</h3>
-                
                 <CommentForm 
                     onSubmitComment={(comment) => {
                         this.props.createCommentAction(comment);

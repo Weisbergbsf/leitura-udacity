@@ -1,4 +1,4 @@
-import { CREATE_COMMENT, GET_COMMENT_BY_ID, LIST_COMMENTS_BY_POST, EDIT_COMMENT, SHOW_FORM_EDIT_COMMENT, SHOW_FORM_ADD_COMMENT } from '../actions/types';
+import { CREATE_COMMENT, GET_COMMENT_BY_ID, LIST_COMMENTS_BY_POST, EDIT_COMMENT, SHOW_FORM_EDIT_COMMENT, SHOW_FORM_ADD_COMMENT } from '../actions/action-types';
 
 const INITIAL_STATE = {
 
@@ -20,9 +20,9 @@ export default (state = INITIAL_STATE, action) => {
         case EDIT_COMMENT:
             return state.comments.map((comment) => {
                 if (comment.id === action.id) {
-                    console.log(comment, ' aciont id ', action.id)
                     return { ...state, comments: [...state.comments, action.comment] }
                 }
+                return comment;
             })
         case SHOW_FORM_EDIT_COMMENT:
             return { ...state, formEdit: action.formEdit }

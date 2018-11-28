@@ -17,7 +17,6 @@ import Commentary from './Commentary';
 
 class DetailPost extends Component {
     render() {
-        console.log('-------------',this.props)
         let post = this.props.posts.post
         return (
             <div>

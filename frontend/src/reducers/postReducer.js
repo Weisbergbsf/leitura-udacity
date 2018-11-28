@@ -8,7 +8,7 @@ import {
     SORT_POST, 
     GET_POST_BY_ID, 
     EDIT_POST 
-} from '../actions/types';
+} from '../actions/action-types';
 
 const INITIAL_STATE = {
 
@@ -35,6 +35,7 @@ export default (state = INITIAL_STATE, action) => {
                 if (post.id === action.id) {
                     return { ...state, posts: [...state.posts, action.post] }
                 }
+                return post;
             })
         case DELETE_POST:
             return { ...state, posts: state.posts.filter(post => post.id !== action.post_id) }

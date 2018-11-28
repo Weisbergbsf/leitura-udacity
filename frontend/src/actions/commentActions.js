@@ -7,12 +7,12 @@ import {
     EDIT_COMMENT,
     SHOW_FORM_EDIT_COMMENT,
     SHOW_FORM_ADD_COMMENT
-} from './types';
-import { showLoading, hideLoading } from 'react-redux-loading';
+} from './action-types';
 import uuid from 'uuid';
 
 
 export const createCommentAction = (commentReq) => {
+    
     let comment = {
         id: uuid(),
         timestamp: Date.now(),
@@ -20,7 +20,7 @@ export const createCommentAction = (commentReq) => {
         author: commentReq.author,
         parentId: commentReq.parentId
     }
-
+    
     return (dispatch) => {
 
         Api.createComment(comment).then(() => {
@@ -50,6 +50,7 @@ export const editCommentAction = (id, comment) => {
         Api.editComment(commentUp).then(() => {
             dispatch({ type: EDIT_COMMENT, id, comment })
             dispatch(showFormEditComment(false))
+            dispatch(showFormAddComment(false))
         })
     }
 }
