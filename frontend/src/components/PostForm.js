@@ -76,9 +76,9 @@ class PostForm extends Component {
 
     render() {
         const { error, author, title, category, body } = this.state;
-        const list = this.props.categories.categories || [];
+        const categories = this.props.categories.categories || [];
         const optionCategories = [];
-        list.map(category => {
+        categories.map(category => {
             return optionCategories.push({ key: category.name, text: category.name, value: category.name })
         })
         return (

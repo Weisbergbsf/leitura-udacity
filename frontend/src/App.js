@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import LoadingBar from 'react-redux-loading';
 import './App.css';
@@ -16,16 +16,19 @@ class App extends Component {
   render() {
 
     return (
-      <Router>
+      <Router >
         <Fragment>
           <LoadingBar />
           <Container>
             <Navbar />
-            <Route exact path='/'  component={ListPosts} />
-            <Route exact path='/new-post' component={NewPost} />
-            <Route exact path='/post/:id/edit' component={EditPost} />
-            <Route exact path='/:category/:postId' component={DetailPost} />
-            <Route exact path='/*' component={PageNotFound} />
+            <Switch>
+              <Route exact path='/' component={ListPosts} />
+              <Route exact path='/new-post' component={NewPost} />
+              <Route exact path='/post/:id/edit' component={EditPost} />
+              <Route exact path='/:category' component={ListPosts} />
+              <Route exact path='/:category/:postId' component={DetailPost} />
+              <Route exact path='/*' component={PageNotFound} />
+            </Switch>
           </Container>
         </Fragment>
       </Router>
