@@ -1,5 +1,5 @@
 
-import * as Api from '../util/api'
+import * as Api from '../util/api';
 import {
     LIST_COMMENTS_BY_POST,
     CREATE_COMMENT,
@@ -12,7 +12,7 @@ import {
 } from './action-types';
 import uuid from 'uuid';
 
-//import { postById } from './postActions'
+import { postById } from './postActions';
 
 export const createCommentAction = (commentReq) => {
     
@@ -29,6 +29,8 @@ export const createCommentAction = (commentReq) => {
         Api.createComment(comment).then(() => {
             dispatch({ type: CREATE_COMMENT, comment })
             dispatch(showFormAddComment(false))
+            dispatch(listCommentsByPostAction(comment.parentId))
+            dispatch(postById(comment.parentId))
         })
     }
 }
@@ -67,9 +69,12 @@ export const voteCommentAction = (comment_id, option) => {
     }
 }
 
-export const deleteCommentAction = (comment_id) => {
+export const deleteCommentAction = (comment) => {
     return (dispatch) => {
-        Api.deleteComment(comment_id).then(dispatch({ type: DELETE_COMMENT, comment_id }))
+        Api.deleteComment(comment.id).then(() => {
+            dispatch({ type: DELETE_COMMENT, comment_id: comment.id })
+            dispatch(postById(comment.parentId))
+        })
     }
 }
 

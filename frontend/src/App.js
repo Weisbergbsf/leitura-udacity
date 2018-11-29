@@ -4,11 +4,12 @@ import { Container } from 'semantic-ui-react';
 import LoadingBar from 'react-redux-loading';
 import './App.css';
 
-import Navbar from './components/Navbar'
-import ListPosts from './components/ListPosts'
+import Navbar from './components/Navbar';
+import ListPosts from './components/ListPosts';
 import NewPost from './components/NewPost';
 import EditPost from './components/EditPost';
 import DetailPost from './components/DetailPost';
+import PageNotFound from './components/PageNotFound';
 
 class App extends Component {
 
@@ -24,6 +25,7 @@ class App extends Component {
             <Route exact path='/new-post' component={NewPost} />
             <Route exact path='/post/:id/edit' component={EditPost} />
             <Route exact path='/:category/:postId' component={DetailPost} />
+            <Route exact path='/*' component={PageNotFound} />
           </Container>
         </Fragment>
       </Router>

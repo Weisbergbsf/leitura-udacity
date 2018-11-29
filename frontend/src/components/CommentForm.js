@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Input } from 'semantic-ui-react'
+import { Form, Input } from 'semantic-ui-react';
 
 import { withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { listCategoriesAction, createPostAction } from '../actions/postActions';
-import { listCommentsByPostAction, commentById } from '../actions/commentActions';
 
 const styleErro = {
     color: 'red',
@@ -14,35 +10,34 @@ const styleErro = {
 }
 
 class CommentForm extends Component {
-    
-    state = {
-        author: '',
-        body: '',
-        parentId: '',
-        id: '',
-
-        error: ''
-    }
-    
-    componentWillReceiveProps(nexProps) {
-        let comment = nexProps.comment
-        this.setState({
-            author: comment ? comment.author : '',
-            body: comment ? comment.body : '',
-            parentId: nexProps.match.params.postId,
-            id: comment ? comment.id : '',
-        })
-    }
-
-    componentWillMount() {
-        this.setState({parentId: this.props.match.params.postId})
-    }
 
     constructor(props) {
         super(props);
         this.onAuthorChange = this.onAuthorChange.bind(this);
         this.onBodyChange = this.onBodyChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    state = {
+        author: '',
+        body: '',
+        parentId: '',
+        id: '',
+        error: ''
+    }
+    
+    componentWillReceiveProps(nexProps) {
+        let comment = nexProps.comment;
+        this.setState({
+            author: comment ? comment.author : '',
+            body: comment ? comment.body : '',
+            parentId: nexProps.match.params.postId,
+            id: comment ? comment.id : ''
+        })
+    }
+
+    componentWillMount() {
+        this.setState({parentId: this.props.match.params.postId});
     }
 
     onAuthorChange(e) {
@@ -56,7 +51,6 @@ class CommentForm extends Component {
     }
 
     handleSubmit(e) {
-        console.log('handleAddComment ',this.props)
         e.preventDefault();
 
         if (!this.state.author || !this.state.body) {
@@ -69,64 +63,34 @@ class CommentForm extends Component {
                     parentId: this.state.parentId,
                     id: this.state.id
             });
-
-            console.log('handleAddComment ',this.props.match.params)
-            let post_id = this.props.match.params.postById;
-            let category = this.props.match.params.category;
-
-            //this.props.postById(post_id)
-            this.props.history.push(`/${category}/${post_id}`)
         }
-
-        /*
-        
-
-        console.log('handleAddComment ',this.props.match.params)
-        let post_id = this.props.match.params.postById;
-        let category = this.props.match.params.category;
-
-        this.props.postById(post_id)
-        this.props.history.push(`/${category}/${post_id}`)
-        */
     }
 
     render() {
 
+        const { error, author, body } = this.state;
+
         return (
             <div>
                 <br />
-                {this.state.error !== '' && (
-                    <p style={styleErro}>{this.state.error}</p>
-                )}
+                {error !== '' && ( <p style={styleErro}>{error}</p> )}
 
                 <Form onSubmit={this.handleSubmit}>
                     
                     <Form.Field control={Input} label='Author' placeholder='Author'
-                        name='author' value={this.state.author} onChange={this.onAuthorChange}
+                        name='author' value={author} onChange={this.onAuthorChange}
                     />
                     
                     <Form.TextArea label='Body' placeholder="What's happening?"
-                        name='body' value={this.state.body} onChange={this.onBodyChange}
+                        name='body' value={body} onChange={this.onBodyChange}
                     />
 
-                    <Form.Button
-                        disabled={!this.state.author || !this.state.body}
-                    >Submit</Form.Button>
+                    <Form.Button disabled={!author || !body}>Submit</Form.Button>
+                    
                 </Form>
             </div>
         )
     }
 }
 
-const mapStateToProps = state => ({ 
-    posts: state.posts,
-    comments: state.comments.comments,
-})
-const mapDispatchToProps = dispatch => bindActionCreators({
-    listCategoriesAction,
-    createPostAction,
-    listCommentsByPostAction,
-    commentById
-}, dispatch)
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CommentForm));
+export default withRouter(connect()(CommentForm));

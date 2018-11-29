@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import { commentById, editCommentAction, listCommentsByPostAction } from '../actions/commentActions';
+import { editCommentAction, listCommentsByPostAction } from '../actions/commentActions';
 import CommentForm from './CommentForm';
 
 class EditComment extends Component {
 
     render() {
 
-        let category = this.props.match.params.category
+        let category = this.props.match.params.category;
         let postId = this.props.match.params.postId;
 
         return (
@@ -29,15 +29,12 @@ class EditComment extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    comment: state.comments.comment,
-    comments: state.comments.comments,
+    comment: state.comments.comment
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    commentById,
     editCommentAction,
     listCommentsByPostAction
 }, dispatch)
-
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditComment));

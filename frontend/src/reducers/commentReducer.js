@@ -1,7 +1,15 @@
-import { CREATE_COMMENT, GET_COMMENT_BY_ID, LIST_COMMENTS_BY_POST, EDIT_COMMENT, SHOW_FORM_EDIT_COMMENT, SHOW_FORM_ADD_COMMENT, DELETE_COMMENT, VOTE_COMMENT } from '../actions/action-types';
+import { 
+    CREATE_COMMENT, 
+    GET_COMMENT_BY_ID, 
+    LIST_COMMENTS_BY_POST, 
+    EDIT_COMMENT, 
+    SHOW_FORM_EDIT_COMMENT, 
+    SHOW_FORM_ADD_COMMENT, 
+    DELETE_COMMENT, 
+    VOTE_COMMENT 
+} from '../actions/action-types';
 
 const INITIAL_STATE = {
-
     comment: {},
     comments: [],
     formEdit: false,

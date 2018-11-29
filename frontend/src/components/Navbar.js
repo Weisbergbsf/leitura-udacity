@@ -3,15 +3,11 @@ import { Menu, Select } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { 
-    listCategoriesAction,
-    postsAction,
-    sortPostAction
-} from '../actions/postActions';
+import { sortPostAction } from '../actions/postActions';
 
 class Navbar extends Component {
 
-    options = [ 
+    options = [
         { key: 'vote', value: 'voteScore', text: 'Vote Score' },
         { key: 'date', value: 'timestamp', text: 'Date' }
     ]
@@ -27,27 +23,26 @@ class Navbar extends Component {
     }
 
     render() {
-        
+        console.log(this.props)
         const { activeItem } = this.state
         return (
             <div>
                 <Menu pointing secondary>
                     <Menu.Item as={Link} to='/' name='posts' active={activeItem === 'posts'} onClick={this.handleItemClick} />
                     <Menu.Item as={Link} to='/new-post' name='new-post' active={activeItem === 'new-post'} onClick={this.handleItemClick} />
+                    {(this.state.activeItem !== 'new-post' && this.props.location.pathname === '/') && (
+                        <Menu.Menu position='right'>
+                            <Select placeholder='Order by...' options={this.options} onChange={this.handleChangeSelect.bind(this)} />
+                        </Menu.Menu>
+                    )}
 
-                    <Menu.Menu position='right'>
-                         <Select placeholder='Order by...' options={this.options} onChange={this.handleChangeSelect.bind(this)}/>
-                    </Menu.Menu> 
                 </Menu>
             </div>
         )
     }
 }
-const mapStateToProps = state => ({ posts: state.posts })
 const mapDispatchToProps = dispatch => bindActionCreators({
-    listCategoriesAction,
-    postsAction,
     sortPostAction
 }, dispatch)
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));
+export default withRouter(connect(null, mapDispatchToProps)(Navbar));

@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Select, Input } from 'semantic-ui-react'
+import { Form, Select, Input } from 'semantic-ui-react';
 
 import { withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { listCategoriesAction, createPostAction } from '../actions/postActions';
 
 const styleErro = {
     color: 'red',
@@ -13,25 +10,6 @@ const styleErro = {
 }
 
 class PostForm extends Component {
-
-    state = {
-        title: '',
-        author: '',
-        category: '',
-        body: '',
-
-        error: ''
-    }
-
-    componentWillReceiveProps(nexProps) {
-        let post = nexProps.post
-        this.setState({
-            title: post ? post.title : '',
-            author: post ? post.author : '',
-            category: post ? post.category : '',
-            body: post ? post.body : ''
-        })
-    }
 
     constructor(props) {
         super(props);
@@ -42,14 +20,32 @@ class PostForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    state = {
+        title: '',
+        author: '',
+        category: '',
+        body: '',
+        error: ''
+    }
+
+    componentWillReceiveProps(nexProps) {
+        let post = nexProps.post;
+        this.setState({
+            title: post ? post.title : '',
+            author: post ? post.author : '',
+            category: post ? post.category : '',
+            body: post ? post.body : ''
+        })
+    }
+
     onAuthorChange(e) {
         const author = e.target.value;
-        this.setState(() => ({ author: author }));
+        this.setState(() => ({ author }));
     }
 
     onTitleChange(e) {
         const title = e.target.value;
-        this.setState(() => ({ title: title }));
+        this.setState(() => ({ title }));
     }
 
     onCategoryChange(e, data) {
@@ -58,32 +54,28 @@ class PostForm extends Component {
 
     onBodyChange(e) {
         const body = e.target.value;
-        this.setState(() => ({ body: body }));
+        this.setState(() => ({ body }));
     }
 
     handleSubmit(e) {
         e.preventDefault();
-
 
         if (!this.state.title || !this.state.author || !this.state.body) {
             this.setState(() => ({ error: 'Please, set author & title & category & description!' }));
         } else {
             this.setState(() => ({ error: '' }));
 
-            this.props.onSubmitPost(
-                {
-                    author: this.state.author,
-                    title: this.state.title,
-                    category: this.state.category,
-                    body: this.state.body
-                }
-            );
+            this.props.onSubmitPost({
+                author: this.state.author,
+                title: this.state.title,
+                category: this.state.category,
+                body: this.state.body
+            });
         }
     }
 
-
     render() {
-        console.log(this.props)
+        const { error, author, title, category, body } = this.state;
         const list = this.props.categories.categories || [];
         const optionCategories = [];
         list.map(category => {
@@ -92,44 +84,31 @@ class PostForm extends Component {
         return (
             <div>
                 <br />
-                {this.state.error !== '' && (
-                    <p style={styleErro}>{this.state.error}</p>
-                )}
+                {error !== '' && ( <p style={styleErro}>{error}</p>)}
 
                 <Form onSubmit={this.handleSubmit}>
 
                     <Form.Field control={Input} label='Author' placeholder='Author'
-                        name='author' value={this.state.author} onChange={this.onAuthorChange}
+                        name='author' value={author} onChange={this.onAuthorChange}
                     />
                     <Form.Field control={Input} label='Title' placeholder='Title'
-                        name='title' value={this.state.title} onChange={this.onTitleChange}
+                        name='title' value={title} onChange={this.onTitleChange}
                     />
                     <Form.Field control={Select} label='Caterory'
-                        name='category' onChange={this.onCategoryChange} value={this.state.category}
+                        name='category' onChange={this.onCategoryChange} value={category}
                         options={optionCategories} placeholder='Category'
                     />
                     <Form.TextArea label='Body' placeholder="What's happening?"
-                        name='body' value={this.state.body} onChange={this.onBodyChange}
+                        name='body' value={body} onChange={this.onBodyChange}
                     />
 
-                    <Form.Button
-                        disabled={
-                            !this.state.author ||
-                            !this.state.title ||
-                            !this.state.category ||
-                            !this.state.body}
-                    >Submit</Form.Button>
+                    <Form.Button primary disabled={!author || !title || !category || !body}>Submit</Form.Button>
                 </Form>
             </div>
         )
     }
 }
 
-const mapStateToProps = state => ({ categories: state.posts.categories, posts: state.posts })
-const mapDispatchToProps = dispatch => bindActionCreators({
-    listCategoriesAction,
-    createPostAction,
-}, dispatch)
+const mapStateToProps = state => ({ categories: state.posts.categories })
 
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostForm));
+export default withRouter(connect(mapStateToProps)(PostForm));

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { postsAction } from '../actions/postActions';
@@ -16,7 +15,7 @@ class Posts extends Component {
 
     render() {
         const posts = this.props.posts.posts || [];
-        //console.log('--->>  ',posts)
+
         return (
             <Comment.Group size='large' >
                 {posts.map(post => {
@@ -34,4 +33,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     postsAction,
 }, dispatch)
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts));
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

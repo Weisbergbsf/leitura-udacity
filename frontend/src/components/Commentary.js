@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { postsAction, postsByCategoriaAction, postById } from '../actions/postActions';
 import {
     commentById,
     listCommentsByPostAction,
@@ -15,16 +14,15 @@ import {
 import { Comment, Icon, Label, Button, Form, Segment, Divider } from 'semantic-ui-react';
 import moment from 'moment';
 
-import swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/dist/sweetalert2.css'
+import swal from 'sweetalert2/dist/sweetalert2.js';
+import 'sweetalert2/dist/sweetalert2.css';
 
-import NewComment from './NewComment'
-import EditComment from './EditComment'
+import NewComment from './NewComment';
+import EditComment from './EditComment';
 
 class Commentary extends Component {
 
     componentWillMount() {
-        console.log(this.props.match.params)
         this.props.listCommentsByPostAction(this.props.match.params.postId)
     }
 
@@ -35,7 +33,6 @@ class Commentary extends Component {
             this.props.showFormAddComment(false)
         }
         this.props.showFormEditComment(false)
-
     }
 
     handleComment = (comment_id) => {
@@ -59,7 +56,7 @@ class Commentary extends Component {
                     `Comment deleted`,
                     'success'
                 )
-                this.props.deleteCommentAction(comment_id)
+                this.props.deleteCommentAction(comment_id);
             }
         })
     }
@@ -120,7 +117,7 @@ class Commentary extends Component {
                                                     <Icon name="thumbs down outline" color='red' size='large' onClick={() => this.props.voteCommentAction(comment.id, 'downVote')} />
                                                 </Comment.Action>
 
-                                                <Comment.Action onClick={() => this.handleDeleteComment(comment.id)}>
+                                                <Comment.Action onClick={() => this.handleDeleteComment(comment)}>
                                                     <Icon name="trash alternate outline" color='red' size='large' />
                                                 </Comment.Action>
                                                 <Comment.Action >
@@ -143,16 +140,12 @@ class Commentary extends Component {
     }
 }
 const mapStateToProps = state => ({
-    posts: state.posts,
     comments: state.comments.comments,
     formEdit: state.comments.formEdit,
     formAdd: state.comments.formAdd
 
 })
 const mapDispatchToProps = dispatch => bindActionCreators({
-    postsAction,
-    postById,
-    postsByCategoriaAction,
     listCommentsByPostAction,
     commentById,
     showFormAddComment,

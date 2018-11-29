@@ -29,5 +29,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     editPostAction
 }, dispatch)
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(EditPost);

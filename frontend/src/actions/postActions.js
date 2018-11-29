@@ -1,5 +1,5 @@
 
-import * as Api from '../util/api'
+import * as Api from '../util/api';
 import {
     LIST_POSTS,
     LIST_POSTS_BY_CATEGORY,

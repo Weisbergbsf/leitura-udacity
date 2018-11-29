@@ -3,19 +3,16 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-    postsAction,
-    postsByCategoriaAction,
     deletePostAction,
     votePostAction,
     postById,
-
 } from '../actions/postActions';
 
 import { Comment, Icon, Divider, Label } from 'semantic-ui-react';
 import moment from 'moment';
 
-import swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/dist/sweetalert2.css'
+import swal from 'sweetalert2/dist/sweetalert2.js';
+import 'sweetalert2/dist/sweetalert2.css';
 
 class Post extends Component {
 
@@ -34,19 +31,20 @@ class Post extends Component {
                     `Post "${title}" deleted`,
                     'success'
                 )
-                this.props.deletePostAction(post_id)
+                this.props.deletePostAction(post_id);
+                this.props.history.push('/');
             }
         })
     }
 
     handlePost = (post_id) => {
-        this.props.postById(post_id)
-        this.props.history.push(`/post/${post_id}/edit`)
+        this.props.postById(post_id);
+        this.props.history.push(`/post/${post_id}/edit`);
     }
 
     handleDetailPost = (category, post_id) => {
-        this.props.postById(post_id)
-        this.props.history.push(`/${category}/${post_id}`)
+        this.props.postById(post_id);
+        this.props.history.push(`/${category}/${post_id}`);
     }
 
     render() {
@@ -104,14 +102,10 @@ class Post extends Component {
         )
     }
 }
-const mapStateToProps = state => ({ posts: state.posts })
 const mapDispatchToProps = dispatch => bindActionCreators({
-    postsAction,
-    postsByCategoriaAction,
     deletePostAction,
     votePostAction,
     postById,
-
 }, dispatch)
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post));
+export default withRouter(connect(null, mapDispatchToProps)(Post));
