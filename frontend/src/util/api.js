@@ -15,7 +15,7 @@ export const votePost = (post_id, option) => fetchData(`posts/${post_id}`, 'POST
 export const getPostById = (post_id) => fetchGetData(`posts/${post_id}`);//ok
 export const editPost = (post) => fetchData(`posts/${post.id}`, 'PUT', post);//ok
 
-export const getPostsByCategoria = (category) => fetchGetData(`${category}/posts`);
+export const getPostsByCategoria = (category) => fetchGetData(`${category}/posts`);//ok
 
 
 //Comments
@@ -28,7 +28,7 @@ export const editComment = (comment) => fetchData(`comments/${comment.id}`, 'PUT
 
 export const deleteComment = (comment_id) => fetchData(`comments/${comment_id}`, 'DELETE'); // ok
 
-export const voteComment = (comment_id, option) => fetchData(`comment/${comment_id}`, 'POST', option)
+export const voteComment = (comment_id, option) => fetchData(`comments/${comment_id}`, 'POST', option)
 
 
 const fetchGetData = (url) => {

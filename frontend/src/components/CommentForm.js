@@ -56,6 +56,7 @@ class CommentForm extends Component {
     }
 
     handleSubmit(e) {
+        console.log('handleAddComment ',this.props)
         e.preventDefault();
 
         if (!this.state.author || !this.state.body) {
@@ -68,7 +69,25 @@ class CommentForm extends Component {
                     parentId: this.state.parentId,
                     id: this.state.id
             });
+
+            console.log('handleAddComment ',this.props.match.params)
+            let post_id = this.props.match.params.postById;
+            let category = this.props.match.params.category;
+
+            //this.props.postById(post_id)
+            this.props.history.push(`/${category}/${post_id}`)
         }
+
+        /*
+        
+
+        console.log('handleAddComment ',this.props.match.params)
+        let post_id = this.props.match.params.postById;
+        let category = this.props.match.params.category;
+
+        this.props.postById(post_id)
+        this.props.history.push(`/${category}/${post_id}`)
+        */
     }
 
     render() {

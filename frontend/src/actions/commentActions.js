@@ -12,6 +12,8 @@ import {
 } from './action-types';
 import uuid from 'uuid';
 
+//import { postById } from './postActions'
+
 export const createCommentAction = (commentReq) => {
     
     let comment = {
@@ -56,7 +58,14 @@ export const editCommentAction = (id, comment) => {
     }
 }
 
-
+export const voteCommentAction = (comment_id, option) => {
+    let vote = (option === 'upVote') ? 1 : -1
+    return (dispatch) => {
+        Api.voteComment(comment_id, { option }).then(() => {
+            dispatch({ type: VOTE_COMMENT, vote, comment_id })
+        })
+    }
+}
 
 export const deleteCommentAction = (comment_id) => {
     return (dispatch) => {
