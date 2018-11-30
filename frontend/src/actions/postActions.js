@@ -68,7 +68,7 @@ export const editPostAction = (id, post) => {
         body: post.body
     }
     return (dispatch) => {
-        dispatch(listCategoriesAction())
+        
         Api.editPost(postUp).then(() => {
             dispatch({ type: EDIT_POST, id, post })
         })
@@ -79,7 +79,6 @@ export const deletePostAction = (post_id) => {
     return (dispatch) => {
         Api.deletePost(post_id).then(() => {
             dispatch({ type: DELETE_POST, post_id })
-            dispatch(listCategoriesAction())
         })
     }
 }

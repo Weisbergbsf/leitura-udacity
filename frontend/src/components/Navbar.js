@@ -3,7 +3,7 @@ import { Menu, Select, Label } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { sortPostAction, postsByCategoriaAction, listCategoriesAction } from '../actions/postActions';
+import { sortPostAction, postsByCategoriaAction, postsAction } from '../actions/postActions';
 
 class Navbar extends Component {
 
@@ -12,46 +12,75 @@ class Navbar extends Component {
         { key: 'date', value: 'timestamp', text: 'Date' }
     ]
 
-    state = { activeItem: 'posts' }
+    state = { activeItem: 'posts', selectedCategory: '/' }
 
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+    handleItemMenuClick = (e, { name }) => {
+        console.log(name)
+        if(name === 'posts') {
+            this.props.postsAction();
+            this.setState({ selectedCategory: '/' })
+            //this.handleSelectCategory(e,'/')
+            
+        }
+        this.setState({ activeItem: name })
+    }
 
-    handleChangeSelect(e, data) { this.props.sortPostAction(data.value) }
+    handleSelectSort(e, data) { this.props.sortPostAction(data.value) }
+
+    handleSelectCategory(e, data) {
+        //e.preventDefault();
+        console.log(data.value)
+        let category = data.value
+        if (category === 'all') {
+            this.props.history.push('/');
+            this.setState({ selectedCategory: `/` })
+            this.props.postsAction();
+        } else {
+            this.setState({ selectedCategory: `/${category}` })
+            this.props.history.push(`${category}`);
+            this.props.postsByCategoriaAction(category);
+        }
+        this.props.postsAction();
+    }
 
     componentWillMount() {
-        this.props.listCategoriesAction();
         this.props.history.push('/');
-        console.log(this.props)
     }
 
     render() {
-        const { activeItem } = this.state
-        
-        const categories = this.props.categories.categories || [];
+        console.log(this.props)
+        console.log('state: ', this.state.selectedCategory)
+        const { activeItem, selectedCategory } = this.state
+
         const optionCategories = [];
-        optionCategories.push({ text: 'All', value: 'all' })
-        categories.map(category => {
-            return optionCategories.push({ text: category.name, value: category.name })
-        })
-        
+
+        if (this.props.categories !== undefined) {
+
+            const categories = this.props.categories.categories || [];
+
+            optionCategories.push({ text: 'All', value: 'all' })
+            categories.map(category => {
+                return optionCategories.push({ text: category.name, value: category.name })
+            })
+        }
 
         return (
             <div>
                 <Menu pointing secondary>
-                    <Menu.Item as={Link} to='/' name='posts' active={activeItem === 'posts'} onClick={this.handleItemClick} />
-                    <Menu.Item as={Link} to='/new-post' name='new-post' active={activeItem === 'new-post'} onClick={this.handleItemClick} />
-                    {(this.state.activeItem !== 'new-post' && this.props.location.pathname === '/') && (
+                    <Menu.Item as={Link} to='/' name='posts' active={activeItem === 'posts'} onClick={this.handleItemMenuClick} />
+                    <Menu.Item as={Link} to='/new-post' name='new-post' active={activeItem === 'new-post'} onClick={this.handleItemMenuClick} />
+
+                    {(this.state.activeItem !== 'new-post' &&  this.props.location.pathname === selectedCategory) && (
                         <Menu.Item >
-                             
+
                             <Label color='blue' size='huge' >Categories </Label>
-                            <Select defaultValue='all' options={optionCategories} />
-                            
+                            <Select defaultValue='all' options={optionCategories} onChange={this.handleSelectCategory.bind(this)} />
+
                             <Label color='blue' size='huge' >Sort by </Label>
-                            <Select defaultValue='voteScore' options={this.options} onChange={this.handleChangeSelect.bind(this)} />
-                        
+                            <Select defaultValue='voteScore' options={this.options} onChange={this.handleSelectSort.bind(this)} />
+
                         </Menu.Item>
                     )}
-
                 </Menu>
             </div>
         )
@@ -62,7 +91,7 @@ const mapStateToProps = state => ({ categories: state.posts.categories })
 const mapDispatchToProps = dispatch => bindActionCreators({
     sortPostAction,
     postsByCategoriaAction,
-    listCategoriesAction
+    postsAction
 }, dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

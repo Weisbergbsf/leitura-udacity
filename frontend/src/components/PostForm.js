@@ -109,6 +109,6 @@ class PostForm extends Component {
     }
 }
 
-const mapStateToProps = state => ({ categories: state.posts.categories })
+const mapStateToProps = state => ({ categories: state.posts.categories });
 
 export default withRouter(connect(mapStateToProps)(PostForm));

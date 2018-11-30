@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { postsAction } from '../actions/postActions';
+import { postsAction, listCategoriesAction } from '../actions/postActions';
 
 import { Comment } from 'semantic-ui-react';
 
@@ -11,6 +11,7 @@ class Posts extends Component {
 
     componentWillMount() {
         this.props.postsAction();
+        this.props.listCategoriesAction();
     }
 
     render() {
@@ -28,9 +29,10 @@ class Posts extends Component {
         )
     }
 }
-const mapStateToProps = state => ({ posts: state.posts })
+const mapStateToProps = state => ({ posts: state.posts, categories: state.posts.categories })
 const mapDispatchToProps = dispatch => bindActionCreators({
     postsAction,
+    listCategoriesAction
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);

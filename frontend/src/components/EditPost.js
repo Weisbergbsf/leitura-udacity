@@ -23,7 +23,7 @@ class EditPost extends Component {
     }
 }
 
-const mapStateToProps = state => ({ post: state.posts.post })
+const mapStateToProps = state => ({ post: state.posts.post, categories: state.posts.categories })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     editPostAction
