@@ -54,29 +54,30 @@ class Post extends Component {
             <Comment>
                 <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
                 <Comment.Content>
-                    <div onClick={() => this.handleDetailPost(category, id)}>
+                    <div className='content-detail' onClick={() => this.handleDetailPost(category, id)}>
                         <Comment.Text>{title}</Comment.Text>
                         <Comment.Author ><span> {author} </span>  </Comment.Author>
                         <Comment.Metadata>
-                            <div><strong> posted on his page </strong> {moment(timestamp).format("DD/MM/YY HH:mm")}</div>
+                            <div className='posted'><strong> posted on his page </strong> {moment(timestamp).format("DD/MM/YY HH:mm")}</div>
                         </Comment.Metadata>
                         <Comment.Text>{body}</Comment.Text>
-                        <Comment.Metadata>
-                            <div className="content-like">
-                                <Label color={voteScore > 0 ? 'green' : 'red'}>
-                                    <span>{voteScore} Likes </span>
-                                </Label>
-                            </div>
-
-                            <div className="total-comment">
-                                <Label>
-                                    {commentCount}
-                                    <Label.Detail>comments</Label.Detail>
-                                </Label>
-                            </div>
-
-                        </Comment.Metadata>
                     </div>
+                    <Comment.Metadata>
+                        <div className="content-like">
+                            <Label color={voteScore > 0 ? 'green' : 'red'}>
+                                <span>{voteScore} Likes </span>
+                            </Label>
+                        </div>
+
+                        <div className="total-comment">
+                            <Label>
+                                {commentCount}
+                                <Label.Detail>comments</Label.Detail>
+                            </Label>
+                        </div>
+
+                    </Comment.Metadata>
+
                     <div>
                         <Comment.Actions>
                             <Comment.Action onClick={() => this.props.votePostAction(id, 'upVote')}>

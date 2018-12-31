@@ -15,12 +15,9 @@ class Navbar extends Component {
     state = { activeItem: 'posts', selectedCategory: '/' }
 
     handleItemMenuClick = (e, { name }) => {
-        console.log(name)
         if(name === 'posts') {
             this.props.postsAction();
             this.setState({ selectedCategory: '/' })
-            //this.handleSelectCategory(e,'/')
-            
         }
         this.setState({ activeItem: name })
     }
@@ -28,8 +25,6 @@ class Navbar extends Component {
     handleSelectSort(e, data) { this.props.sortPostAction(data.value) }
 
     handleSelectCategory(e, data) {
-        //e.preventDefault();
-        console.log(data.value)
         let category = data.value
         if (category === 'all') {
             this.props.history.push('/');
@@ -48,14 +43,10 @@ class Navbar extends Component {
     }
 
     render() {
-        console.log(this.props)
-        console.log('state: ', this.state.selectedCategory)
         const { activeItem, selectedCategory } = this.state
-
         const optionCategories = [];
 
         if (this.props.categories !== undefined) {
-
             const categories = this.props.categories.categories || [];
 
             optionCategories.push({ text: 'All', value: 'all' })

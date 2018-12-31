@@ -8,11 +8,14 @@
 .author span {
     color: #4183c4;
 }
-.content-reply:hover {
+.content-detail:hover {
     cursor: pointer;
 }
-.content-reply:hover .reply{
-    color: #4183c4;
+.author {
+    float: left;
+}
+.posted {
+    float: right;
 }
 .actions a i{
     margin-left: 7px;
