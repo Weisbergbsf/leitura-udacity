@@ -68,7 +68,6 @@ export const editPostAction = (id, post) => {
         body: post.body
     }
     return (dispatch) => {
-        
         Api.editPost(postUp).then(() => {
             dispatch({ type: EDIT_POST, id, post })
         })

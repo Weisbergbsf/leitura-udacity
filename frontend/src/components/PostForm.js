@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Select, Input } from 'semantic-ui-react';
 
+import { menuAction } from '../actions/menuAction';
+
 import { withRouter } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 const styleErro = {
@@ -71,6 +74,9 @@ class PostForm extends Component {
                 category: this.state.category,
                 body: this.state.body
             });
+            //Redirect to posts
+            //this.props.history.push('/')
+            this.props.menuAction('posts')
         }
     }
 
@@ -110,5 +116,6 @@ class PostForm extends Component {
 }
 
 const mapStateToProps = state => ({ categories: state.posts.categories });
+const mapDispathcToProps = dispatch => bindActionCreators({ menuAction }, dispatch);
 
-export default withRouter(connect(mapStateToProps)(PostForm));
+export default withRouter(connect(mapStateToProps, mapDispathcToProps)(PostForm));

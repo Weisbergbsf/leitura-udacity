@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { editPostAction } from '../actions/postActions';
+
 import PostForm from './PostForm';
 
 class EditPost extends Component {
@@ -11,6 +13,8 @@ class EditPost extends Component {
 
         return (
             <div>
+                <br/>
+                <h3>Edit Post</h3>
                 <PostForm
                     post={this.props.post}
                     onSubmitPost={post => {

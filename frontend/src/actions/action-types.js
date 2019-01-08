@@ -1,3 +1,6 @@
+/*MENU*/
+export const CHANGE_MENU = 'CHANGE_MENU';
+
 /*CATEGORIES*/
 export const LIST_CATEGORIES = 'LIST_CATEGORIES';
 

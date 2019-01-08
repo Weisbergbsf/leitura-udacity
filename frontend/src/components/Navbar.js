@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { sortPostAction, postsByCategoriaAction, postsAction } from '../actions/postActions';
+import { menuAction } from '../actions/menuAction';
 
 class Navbar extends Component {
 
@@ -12,14 +13,9 @@ class Navbar extends Component {
         { key: 'date', value: 'timestamp', text: 'Date' }
     ]
 
-    state = { activeItem: 'posts', selectedCategory: '/' }
-
     handleItemMenuClick = (e, { name }) => {
-        if(name === 'posts') {
-            this.props.postsAction();
-            this.setState({ selectedCategory: '/' })
-        }
-        this.setState({ activeItem: name })
+        this.props.menuAction(name);
+        this.props.postsAction();
     }
 
     handleSelectSort(e, data) { this.props.sortPostAction(data.value) }
@@ -27,23 +23,13 @@ class Navbar extends Component {
     handleSelectCategory(e, data) {
         let category = data.value
         if (category === 'all') {
-            this.props.history.push('/');
-            this.setState({ selectedCategory: `/` })
             this.props.postsAction();
         } else {
-            this.setState({ selectedCategory: `/${category}` })
-            this.props.history.push(`${category}`);
             this.props.postsByCategoriaAction(category);
         }
-        this.props.postsAction();
-    }
-
-    componentWillMount() {
-        this.props.history.push('/');
     }
 
     render() {
-        const { activeItem, selectedCategory } = this.state
         const optionCategories = [];
 
         if (this.props.categories !== undefined) {
@@ -58,10 +44,11 @@ class Navbar extends Component {
         return (
             <div>
                 <Menu pointing secondary>
-                    <Menu.Item as={Link} to='/' name='posts' active={activeItem === 'posts'} onClick={this.handleItemMenuClick} />
-                    <Menu.Item as={Link} to='/new-post' name='new-post' active={activeItem === 'new-post'} onClick={this.handleItemMenuClick} />
+                    <Menu.Item as={Link} to='/' name='posts' active={this.props.activeItem === 'posts'} onClick={this.handleItemMenuClick} />
+                    <Menu.Item as={Link} to='/new-post' name='new-post' active={this.props.activeItem === 'new-post'} onClick={this.handleItemMenuClick} />
+                    
 
-                    {(this.state.activeItem !== 'new-post' &&  this.props.location.pathname === selectedCategory) && (
+                    {(this.props.activeItem === 'posts' && this.props.location.pathname === '/') && (
                         <Menu.Item >
 
                             <Label color='blue' size='huge' >Categories </Label>
@@ -77,12 +64,13 @@ class Navbar extends Component {
         )
     }
 }
-const mapStateToProps = state => ({ categories: state.posts.categories })
+const mapStateToProps = state => ({ categories: state.posts.categories, activeItem:  state.menu.activeItem })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     sortPostAction,
     postsByCategoriaAction,
-    postsAction
+    postsAction,
+    menuAction
 }, dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

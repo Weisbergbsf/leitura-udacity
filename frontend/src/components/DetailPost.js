@@ -11,7 +11,7 @@ class DetailPost extends Component {
         let post = this.props.posts.post;
         return (
             <div>
-                <br/>
+                <br />
                 <Comment.Group size='large' >
                     <Post {...post} />
                 </Comment.Group>

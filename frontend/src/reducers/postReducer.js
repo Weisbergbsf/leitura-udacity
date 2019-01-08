@@ -23,7 +23,7 @@ export default (state = INITIAL_STATE, action) => {
         case LIST_CATEGORIES:
             return { ...state, categories: action.categories }
         case LIST_POSTS_BY_CATEGORY:
-            return { ...state, category: action.category, posts: action.posts }
+            return { ...state, posts: action.posts, category: action.category }
         case LIST_POSTS:
             return { ...state, posts: action.posts }
         case CREATE_POST:

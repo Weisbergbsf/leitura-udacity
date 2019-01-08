@@ -16,6 +16,10 @@ import 'sweetalert2/dist/sweetalert2.css';
 
 class Post extends Component {
 
+    state = {
+        hasPost: true
+    }
+
     handleDeletePost = (post_id, title) => {
         swal({
             title: 'Are you sure?',
@@ -47,59 +51,80 @@ class Post extends Component {
         this.props.history.push(`/${category}/${post_id}`);
     }
 
+    componentDidMount() {
+        if (this.props.match.params.postId !== undefined) {
+            this.props.postById(this.props.match.params.postId)
+        }
+    }
+
+    componentWillReceiveProps(props) {
+        if (props.id === undefined) {
+            this.setState({ hasPost: false })
+        } else {
+            this.setState({ hasPost: true })
+        }
+    }
+
     render() {
         const { id, timestamp, title, body, author, voteScore, commentCount, category } = this.props
 
         return (
-            <Comment>
-                <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
-                <Comment.Content>
-                    <div className='content-detail' onClick={() => this.handleDetailPost(category, id)}>
-                        <Comment.Text>{title}</Comment.Text>
-                        <Comment.Author ><span> {author} </span>  </Comment.Author>
-                        <Comment.Metadata>
-                            <div className='posted'><strong> posted on his page </strong> {moment(timestamp).format("DD/MM/YY HH:mm")}</div>
-                        </Comment.Metadata>
-                        <Comment.Text>{body}</Comment.Text>
-                    </div>
-                    <Comment.Metadata>
-                        <div className="content-like">
-                            <Label color={voteScore > 0 ? 'green' : 'red'}>
-                                <span>{voteScore} Likes </span>
-                            </Label>
-                        </div>
+            <div>
+                {this.state.hasPost ? (
+                    <Comment>
+                        <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
+                        <Comment.Content>
+                            <div className='content-detail' onClick={() => this.handleDetailPost(category, id)}>
+                                <Comment.Text>{title}</Comment.Text>
+                                <Comment.Author ><span> {author} </span>  </Comment.Author>
+                                <Comment.Metadata>
+                                    <div className='posted'><strong> posted on his page </strong> {moment(timestamp).format("DD/MM/YY HH:mm")}</div>
+                                </Comment.Metadata>
+                                <Comment.Text>{body}</Comment.Text>
+                            </div>
+                            <Comment.Metadata>
+                                <div className="content-like">
+                                    <Label color={voteScore > 0 ? 'green' : 'red'}>
+                                        <span>{voteScore} Likes </span>
+                                    </Label>
+                                </div>
 
-                        <div className="total-comment">
-                            <Label>
-                                {commentCount}
-                                <Label.Detail>comments</Label.Detail>
-                            </Label>
-                        </div>
+                                <div className="total-comment">
+                                    <Label>
+                                        {commentCount}
+                                        <Label.Detail>comments</Label.Detail>
+                                    </Label>
+                                </div>
 
-                    </Comment.Metadata>
+                            </Comment.Metadata>
 
-                    <div>
-                        <Comment.Actions>
-                            <Comment.Action onClick={() => this.props.votePostAction(id, 'upVote')}>
-                                <Icon name="thumbs up outline" color='green' size='large' />
-                            </Comment.Action>
-                            <Comment.Action onClick={() => this.props.votePostAction(id, 'downVote')}>
-                                <Icon name="thumbs down outline" color='red' size='large' />
-                            </Comment.Action>
+                            <div>
+                                <Comment.Actions>
+                                    <Comment.Action onClick={() => this.props.votePostAction(id, 'upVote')}>
+                                        <Icon name="thumbs up outline" color='green' size='large' />
+                                    </Comment.Action>
+                                    <Comment.Action onClick={() => this.props.votePostAction(id, 'downVote')}>
+                                        <Icon name="thumbs down outline" color='red' size='large' />
+                                    </Comment.Action>
 
-                            <Comment.Action onClick={() => this.handleDeletePost(id, title)}>
-                                <Icon name="trash alternate outline" color='red' size='large' />
-                            </Comment.Action>
-                            <Comment.Action onClick={() => this.handlePost(id)}>
-                                <Icon name="edit outline" color='blue' size='large' />
-                            </Comment.Action>
+                                    <Comment.Action onClick={() => this.handleDeletePost(id, title)}>
+                                        <Icon name="trash alternate outline" color='red' size='large' />
+                                    </Comment.Action>
+                                    <Comment.Action onClick={() => this.handlePost(id)}>
+                                        <Icon name="edit outline" color='blue' size='large' />
+                                    </Comment.Action>
 
-                        </Comment.Actions>
-                    </div>
-                </Comment.Content>
-                <Divider />
+                                </Comment.Actions>
+                            </div>
+                        </Comment.Content>
+                        <Divider />
+                    </Comment>
+                ) : (
+                        <h1>Comments not found</h1>
+                    )}
 
-            </Comment>
+            </div>
+
         )
     }
 }

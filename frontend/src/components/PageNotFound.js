@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Header } from 'semantic-ui-react';
 
-class PageNotFound extends Component {
-    render() {
-        return(
-            <div>
-                Page not found.
-            </div>
-        )
-    }
+const PageNotFound = ({location}) => {
+    return (
+        <Header textAlign='center'>
+            <h1> Page not found. </h1>
+            <a href="/">Back to posts</a> 
+        </Header>
+    )
 }
-export default PageNotFound;
+
+export default PageNotFound

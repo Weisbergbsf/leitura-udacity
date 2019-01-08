@@ -1,4 +1,4 @@
-## Leitura Udacity
+# Leitura Udacity
 
 Reading is a project made in React. This app will allow users to post content in pre-defined categories, comment on their own posts and those of other users, and vote on posts and comments. Users can edit and delete posts and comments.
 

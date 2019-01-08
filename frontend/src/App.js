@@ -11,6 +11,7 @@ import EditPost from './components/EditPost';
 import DetailPost from './components/DetailPost';
 import PageNotFound from './components/PageNotFound';
 
+
 class App extends Component {
 
   render() {
@@ -23,11 +24,11 @@ class App extends Component {
             <Navbar />
             <Switch>
               <Route exact path='/' component={ListPosts} />
-              <Route exact path='/new-post' component={NewPost} />
-              <Route exact path='/post/:id/edit' component={EditPost} />
+              <Route path='/new-post' component={NewPost} />
+              <Route path='/post/:id/edit' component={EditPost} />
+              <Route path='/:category/:postId' component={DetailPost} />
+              <Route component={PageNotFound} />
               <Route exact path='/:category' component={ListPosts} />
-              <Route exact path='/:category/:postId' component={DetailPost} />
-              <Route exact path='/*' component={PageNotFound} />
             </Switch>
           </Container>
         </Fragment>
