@@ -13,6 +13,8 @@ class Navbar extends Component {
         { key: 'date', value: 'timestamp', text: 'Date' }
     ]
 
+    state = { selectedCategory: '/' }
+
     handleItemMenuClick = (e, { name }) => {
         this.props.menuAction(name);
         this.props.postsAction();
@@ -23,8 +25,13 @@ class Navbar extends Component {
     handleSelectCategory(e, data) {
         let category = data.value
         if (category === 'all') {
+            this.props.history.push('/');
+            this.setState({ selectedCategory: `/` })
             this.props.postsAction();
         } else {
+            this.setState({ selectedCategory: `/${category}` })
+            this.props.history.push('/');
+            this.props.history.push(`${category}`);
             this.props.postsByCategoriaAction(category);
         }
     }
@@ -46,9 +53,8 @@ class Navbar extends Component {
                 <Menu pointing secondary>
                     <Menu.Item as={Link} to='/' name='posts' active={this.props.activeItem === 'posts'} onClick={this.handleItemMenuClick} />
                     <Menu.Item as={Link} to='/new-post' name='new-post' active={this.props.activeItem === 'new-post'} onClick={this.handleItemMenuClick} />
-                    
 
-                    {(this.props.activeItem === 'posts' && this.props.location.pathname === '/') && (
+                    {(this.props.activeItem !== 'new-post') && (
                         <Menu.Item >
 
                             <Label color='blue' size='huge' >Categories </Label>
@@ -64,7 +70,7 @@ class Navbar extends Component {
         )
     }
 }
-const mapStateToProps = state => ({ categories: state.posts.categories, activeItem:  state.menu.activeItem })
+const mapStateToProps = state => ({ categories: state.posts.categories, activeItem: state.menu.activeItem })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     sortPostAction,

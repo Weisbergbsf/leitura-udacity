@@ -24,11 +24,11 @@ class App extends Component {
             <Navbar />
             <Switch>
               <Route exact path='/' component={ListPosts} />
-              <Route path='/new-post' component={NewPost} />
-              <Route path='/post/:id/edit' component={EditPost} />
-              <Route path='/:category/:postId' component={DetailPost} />
-              <Route component={PageNotFound} />
+              <Route exact path='/new-post' component={NewPost} />
+              <Route exact path='/post/:id/edit' component={EditPost} />
+              <Route exact path='/:category/:postId' component={DetailPost} />
               <Route exact path='/:category' component={ListPosts} />
+              <Route component={PageNotFound} />
             </Switch>
           </Container>
         </Fragment>
